@@ -42,9 +42,9 @@ public class LoginController {
                                   @RequestParam(name = "password") String password,
                                   HttpServletRequest request) {
 
-//        User possibleUser = loginService.validateLogin(email, password);
+        User possibleUser = loginService.validateLogin(email, password);
 //        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
-        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
+//        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
         if (possibleUser.getUserId() > 0) {
             HttpSession oldSession = request.getSession(false);
             if (oldSession != null) oldSession.invalidate();
@@ -80,7 +80,24 @@ public class LoginController {
             return new ModelAndView("redirect:/quiz");
         }
         model.addAttribute("title", "Register");
+        model.addAttribute("user", new User());
         return new ModelAndView("register");
+    }
+
+    @PostMapping("/register")
+    public ModelAndView postRegister(User newUser,
+                                     HttpServletRequest request, Model model) {
+        User testUser = loginService.getUserByEmail(newUser.getEmail());
+        model.addAttribute("title", "Register");
+        if (testUser.getUserId() < 1) {
+            loginService.createNewUser(newUser);
+            return new ModelAndView("redirect:/login");
+        } else {
+            newUser.setMessage("Email Already Exist!");
+            model.addAttribute("user", newUser);
+            return new ModelAndView("register");
+        }
+
     }
 
 }

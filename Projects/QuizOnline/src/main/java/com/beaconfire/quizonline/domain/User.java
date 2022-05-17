@@ -17,7 +17,21 @@ public class User {
     private String faceUrl;
     private int addressId;
     private Address address;
+    private String street;
+    private String city;
+    private String state;
+    private int zipcode;
+    private String country;
     private boolean isActive;
     private boolean isAdmin;
     private String message;
+
+    public void setAddressToUser(Address address) {
+        this.setAddress(address);
+        this.setCity(address.getCity());
+        this.setStreet(address.getStreet());
+        this.setState(address.getState());
+        this.setCountry(address.getCountry());
+        this.setZipcode(address.getZipcode());
+    }
 }
