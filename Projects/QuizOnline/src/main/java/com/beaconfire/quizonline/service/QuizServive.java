@@ -35,7 +35,19 @@ public class QuizServive {
                 Question q = qq.getQuestion();
                 if (q.getType().equals("MULTIPLE_CHOICE")) {
                     Choice choice = q.getChoiceMap().get(qq.getUserChoiceId());
-                    return choice.isCorrect() ? 1 : 0;
+                    if (choice == null) {
+                        qq.setCorrect(false);
+                        qq.setMessage("The Answer was not Selected!");
+                        return 0;
+                    }
+                    if (choice.isCorrect()) {
+                        qq.setCorrect(true);
+                        qq.setMessage("Got Correct Answer!");
+                        return 1;
+                    }
+                    qq.setCorrect(false);
+                    qq.setMessage("Got Wrong Answer!");
+                    return 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
                     Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
@@ -52,8 +64,9 @@ public class QuizServive {
         return quizDao.getQuizById(quizId).orElse(new Quiz());
     }
 
-    public void updateQuizQuestion(QuizQuestion quizQuestion) {
-        quizQuestionDao.updateQuizQuestionById(quizQuestion.getQqId(), quizQuestion.getUserChoiceId(),
+    public boolean updateQuizQuestion(QuizQuestion quizQuestion) {
+        quizDao.setEndTimeById(quizQuestion.getQuizId());
+        return 1 == quizQuestionDao.updateQuizQuestionById(quizQuestion.getQqId(), quizQuestion.getUserChoiceId(),
                 quizQuestion.getUserShortAnswer(), quizQuestion.getOrderNum(), quizQuestion.isMarked());
     }
 
@@ -71,7 +84,20 @@ public class QuizServive {
                 Question q = qq.getQuestion();
                 if (q.getType().equals("MULTIPLE_CHOICE")) {
                     Choice choice = q.getChoiceMap().get(qq.getUserChoiceId());
-                    return choice.isCorrect() ? 1 : 0;
+                    if (choice == null) {
+                        qq.setCorrect(false);
+                        qq.setMessage("The Answer was not Selected!");
+                        return 0;
+                    }
+                    if (choice.isCorrect()) {
+                        qq.setCorrect(true);
+                        qq.setMessage("Got Correct Answer!");
+                        return 1;
+                    }
+                    qq.setCorrect(false);
+                    qq.setMessage("Got Wrong Answer!");
+                    return 0;
+//                    return choice.isCorrect() ? 1 : 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
                     Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
@@ -82,5 +108,18 @@ public class QuizServive {
             return quiz;
         }).collect(Collectors.toList());
 
+    }
+
+    public List<Question> getAllQuestion() {
+        return questionDao.getAllQuestion();
+    }
+
+    public boolean createNewQuestion(Question q) {
+        return 0 < questionDao.createNewQuestion(q.getCategoryId(), q.getDescription(), q.getType(),
+                q.getCorrectAnswer(), q.getChoice1(), q.getChoice2(), q.getChoice3());
+    }
+
+    public boolean changeActiveQuestionById(int id) {
+        return 1 == questionDao.changeActiveById(id);
     }
 }

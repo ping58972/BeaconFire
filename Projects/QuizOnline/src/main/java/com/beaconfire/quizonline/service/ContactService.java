@@ -19,4 +19,9 @@ public class ContactService {
     public List<Contact> getAllContact() {
         return contactDao.getAllContact();
     }
+
+    public boolean createNewContactMessage(Contact contact) {
+        return 1 == contactDao.createNewContact(contact.getFirstName(),
+                contact.getLastName(), contact.getSubject(), contact.getMessage());
+    }
 }

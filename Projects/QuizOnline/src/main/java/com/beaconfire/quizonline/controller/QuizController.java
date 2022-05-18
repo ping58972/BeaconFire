@@ -48,15 +48,32 @@ public class QuizController {
         return "login";
     }
 
+    @GetMapping("/quiz/table/{id}/new")
+    public String newQuizTable(@PathVariable Integer id,
+                               HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            takeQuiz = quizServive.getNewQuiz(user.getUserId(), id);
+            List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
+                    .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
+            QuizQuestion qq = quizQuestions.get(0);
+            model.addAttribute("cateId", id);
+            model.addAttribute("quizQuestion", qq);
+            model.addAttribute("takeQuiz", takeQuiz);
+            model.addAttribute("page_num", 1);
+            model.addAttribute("title", "Quiz Table");
+            return "quiz-table";
+        }
+        return "login";
+    }
+
     @GetMapping("/quiz/table/{id}/question/{num}")
     public String quizTable(@PathVariable Integer id, @PathVariable Integer num,
                             HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
-            if (takeQuiz == null) {
-                takeQuiz = quizServive.getNewQuiz(user.getUserId(), id);
-            }
             List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
                     .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
             QuizQuestion qq = quizQuestions.get(num - 1);
@@ -72,8 +89,7 @@ public class QuizController {
 
     @PostMapping("/quiz/table/{id}/question/{num}")
     public ModelAndView quizTablePost(@PathVariable Integer id, @PathVariable Integer num,
-                                      @RequestParam("userChoiceId") int userChoiceId,
-                                      @RequestParam("userShortAnswer") String userShortAnswer,
+                                      QuizQuestion qq,
                                       HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
@@ -81,15 +97,23 @@ public class QuizController {
             List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
                     .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
             QuizQuestion quizQuestion = quizQuestions.get(num - 1);
-
+            model.addAttribute("user", user);
+            model.addAttribute("titile", "Taking Quiz");
             model.addAttribute("cateId", id);
             model.addAttribute("quizQuestion", quizQuestion);
             model.addAttribute("takeQuiz", takeQuiz);
             model.addAttribute("page_num", num);
-            quizQuestion.setUserChoiceId(userChoiceId);
-            quizQuestion.setMarked(true);
-            quizQuestion.setUserShortAnswer(userShortAnswer);
-            quizServive.updateQuizQuestion(quizQuestion);
+            if (qq.getUserChoiceId() > 0 || qq.getUserShortAnswer() != null) {
+                if (qq.getUserChoiceId() > 0) {
+                    quizQuestion.setUserChoiceId(qq.getUserChoiceId());
+                    quizQuestion.setMarked(true);
+                }
+                if (qq.getUserShortAnswer().length() != 0) {
+                    quizQuestion.setUserShortAnswer(qq.getUserShortAnswer());
+                }
+                boolean isSuccess = quizServive.updateQuizQuestion(quizQuestion);
+                model.addAttribute("isSuccess", isSuccess);
+            }
             if (num < 10) {
                 num++;
             }
@@ -112,7 +136,19 @@ public class QuizController {
                 Question q = qq.getQuestion();
                 if (q.getType().equals("MULTIPLE_CHOICE")) {
                     Choice choice = q.getChoiceMap().get(qq.getUserChoiceId());
-                    return choice.isCorrect() ? 1 : 0;
+                    if (choice == null) {
+                        qq.setCorrect(false);
+                        qq.setMessage("The Answer was not Selected!");
+                        return 0;
+                    }
+                    if (choice.isCorrect()) {
+                        qq.setCorrect(true);
+                        qq.setMessage("Got Correct!");
+                        return 1;
+                    }
+                    qq.setCorrect(false);
+                    qq.setMessage("Got Wrong Answer");
+                    return 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
                     Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;

@@ -45,7 +45,7 @@ public class LoginController {
         User possibleUser = loginService.validateLogin(email, password);
 //        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
 //        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
-        if (possibleUser.getUserId() > 0) {
+        if (possibleUser.getUserId() > 0 && possibleUser.isActive()) {
             HttpSession oldSession = request.getSession(false);
             if (oldSession != null) oldSession.invalidate();
             HttpSession newSession = request.getSession(true);

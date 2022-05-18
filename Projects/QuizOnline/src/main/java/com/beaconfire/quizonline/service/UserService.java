@@ -30,4 +30,8 @@ public class UserService {
                 newUser.getPhone(), newUser.getStreet(), newUser.getCity(), newUser.getState(),
                 newUser.getZipcode(), newUser.getCountry());
     }
+
+    public boolean changeActiveUserById(int id) {
+        return 1 == userDao.changeActiveById(id);
+    }
 }

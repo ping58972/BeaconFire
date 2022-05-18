@@ -3,24 +3,29 @@ package com.beaconfire.quizonline.controller;
 import com.beaconfire.quizonline.domain.Contact;
 import com.beaconfire.quizonline.domain.Feedback;
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.service.ContactService;
+import com.beaconfire.quizonline.service.FeedbackService;
 import com.beaconfire.quizonline.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 
 @Controller
 public class OtherController {
     private final UserService userService;
+    private final FeedbackService feedbackService;
+    private final ContactService contactService;
 
-    public OtherController(UserService userService) {
+    public OtherController(UserService userService, FeedbackService feedbackService, ContactService contactService) {
         this.userService = userService;
+        this.feedbackService = feedbackService;
+        this.contactService = contactService;
     }
 
     @GetMapping("/")
@@ -49,8 +54,11 @@ public class OtherController {
         if (session != null && session.getAttribute("user") != null) {
             model.addAttribute("title", "Feedback");
             User user = (User) session.getAttribute("user");
+            feedback.setFeedbackId(user.getUserId());
+            feedback.setFeedbackTime(new Timestamp(System.currentTimeMillis()));
+            boolean isSuccess = feedbackService.createNewFeedback(feedback);
             model.addAttribute("user", user);
-            System.out.println(feedback);
+            model.addAttribute("isSuccess", isSuccess);
             return new ModelAndView("feedback");
         }
         return new ModelAndView("redirect:/login");
@@ -60,7 +68,7 @@ public class OtherController {
     public ModelAndView contact(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            model.addAttribute("title", "Feedback");
+            model.addAttribute("title", "Contact");
             User user = (User) session.getAttribute("user");
             model.addAttribute("user", user);
             return new ModelAndView("contact");
@@ -77,7 +85,9 @@ public class OtherController {
             model.addAttribute("title", "Contact");
             User user = (User) session.getAttribute("user");
             model.addAttribute("user", user);
-            System.out.println(contact);
+
+            boolean isSuccess = contactService.createNewContactMessage(contact);
+            model.addAttribute("isSuccess", isSuccess);
             return new ModelAndView("contact");
         }
         return new ModelAndView("redirect:/login");

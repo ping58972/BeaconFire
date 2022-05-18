@@ -26,9 +26,27 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/admin">Home <span class="sr-only"></span></a>
+                            <a class="nav-link" href="/admin">Categories <span class="sr-only"></span></a>
                         </li>
-
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/admin/user/all">Users <span class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/admin/quiz/all">Quiz Results <span
+                                    class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/admin/question/all">Questions <span
+                                    class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/admin/feedback/all">Feedbacks <span
+                                    class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/admin/contact/all">Contact Messages <span
+                                    class="sr-only"></span></a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link " href="/logout">Logout</a>
                         </li>

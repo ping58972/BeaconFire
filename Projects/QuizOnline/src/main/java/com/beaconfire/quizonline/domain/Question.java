@@ -1,4 +1,5 @@
 package com.beaconfire.quizonline.domain;
+
 import lombok.*;
 
 import java.util.Map;
@@ -11,8 +12,14 @@ import java.util.Map;
 public class Question {
     private int questionId;
     private int categoryId;
+    private String categoryName;
     private String description;
     private String type;
     private boolean isActive;
     private Map<Integer, Choice> choiceMap;
+    private String correctAnswer;
+    private String choice1;
+    private String choice2;
+    private String choice3;
+
 }

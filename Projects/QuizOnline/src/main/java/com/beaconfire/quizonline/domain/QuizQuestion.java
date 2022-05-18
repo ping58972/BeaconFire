@@ -1,4 +1,5 @@
 package com.beaconfire.quizonline.domain;
+
 import lombok.*;
 
 @Getter
@@ -14,5 +15,7 @@ public class QuizQuestion {
     private int userChoiceId;
     private String userShortAnswer;
     private int orderNum;
+    private boolean isCorrect;
+    private String message;
     private boolean isMarked;
 }
