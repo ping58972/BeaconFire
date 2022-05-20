@@ -1,13 +1,15 @@
 <%@include file="head.jsp" %>
 
-
+<jsp:useBean id="dateValue" class="java.util.Date"/>
+<jsp:setProperty name="dateValue" property="time" value="${h.time}"/>
 <div class="container">
     <div class="card text-center">
+        <span>${dateValue}</span>
         <form method="post" action="/quiz/table/${cateId}/question/${page_num}">
             <div class="card-header">
                 <h3>Quiz Name: ${takeQuiz.quizName}</h3>
+                <div id="countdown"></div>
             </div>
-
             <div class="card-body">
                 <h3 class="card-text"> ${quizQuestion.question.description} </h3>
                 <p></p>
@@ -23,9 +25,7 @@
                                 <c:if test="${entry.key != quizQuestion.userChoiceId}">
                                     <input type="radio" name="userChoiceId" class="form-check-input"
                                            value="${entry.key}"/>${entry.value.choiceDesription}
-
                                 </c:if>
-
                                 <input type="hidden" name="userShortAnswer" value="">
                             </c:if>
                         </div>
@@ -35,108 +35,90 @@
                                    value="${quizQuestion.userShortAnswer}">
                             <input type="hidden" name="userChoiceId" value="0">
                         </c:if>
-
                     </c:forEach>
-
                 </div>
-
             </div>
-
-
+            <br><c:if test="${isSuccess}"><p
+                style="color: blue">Answer for Question #${page_num -1} has Saved!</p></c:if>
             <button class="btn btn-primary" type="submit">Save -> Next</button>
-            <c:if test="${isSuccess}"> <span>Answer for Question # ${page_num} has Saved!</span></c:if>
+
         </form>
+
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="card text-center">
+        <nav aria-label="...">
+            <ul class="pagination pagination-lg">
+                <%--                <c:forEach begin="1" end="${takeQuiz.quizQuestionMap.size()}" varStatus="loop">--%>
+                <c:forEach var="quizQuest" items="${quizQuestions}">
+                    <c:if test="${page_num == quizQuest.orderNum}">
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">${quizQuest.orderNum}<span class="sr-only"></span></span>
+                        </li>
+                    </c:if>
+                    <c:if test="${page_num != quizQuest.orderNum}">
+                        <c:choose>
+                            <c:when test="${quizQuest.marked}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="/quiz/table/${cateId}/question/${quizQuest.orderNum}"><span
+                                        style="color: green">${quizQuest.orderNum}</span></a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link"
+                                                         href="/quiz/table/${cateId}/question/${quizQuest.orderNum}">${quizQuest.orderNum}</a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </nav>
+        <br>
+        <a class="btn btn-warning" id="get-result" href="/quiz/result/${takeQuiz.quizId}" type="submit">Get Result</a>
     </div>
 </div>
 
-<nav aria-label="...">
-    <ul class="pagination pagination-lg">
-        <c:forEach begin="1" end="${takeQuiz.quizQuestionMap.size()}" varStatus="loop">
-            <c:if test="${page_num == loop.index}">
-                <li class="page-item active" aria-current="page">
-                    <span class="page-link">${loop.index}<span class="sr-only"></span></span>
-                </li>
-            </c:if>
-            <c:if test="${page_num != loop.index}">
-                <li class="page-item"><a class="page-link"
-                                         href="/quiz/table/${cateId}/question/${loop.index}">${loop.index}</a>
-                </li>
-            </c:if>
-
-        </c:forEach>
-    </ul>
-</nav>
-
-<a class="btn btn-warning" href="/quiz/result/${takeQuiz.quizId}" type="submit">Get Result</a>
+<button id="popup" hidden type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-backdrop="false" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Your Quiz is Over</h5>
+            </div>
+            <div class="modal-body">
+                Your Time is Run out.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-warning" href="/quiz/result/${takeQuiz.quizId}" type="submit">Get Result</a>
+            </div>
+        </div>
+    </div>
 </div>
-<%@include file="foot.jsp" %>
 
-<%--dfk
-<style>
-    #my-popup {
-        Width: 600px;
-        Height: 400px;
-        Background: gray;
-        Box-sizing: border-box; /* for inside padding */
-        Padding: 10px;
-
-        /* for center */
-        Position: absolute;
-        top: 50%;
-        left: 50%;
-        Transform: translate(-50%, -50%);
-
-        /* for hider */
-        display: none;
-    }
-</style>
-<div id="my-popup">
-    <button id=”close-bnt”>X</button>
-    // your content goes here
-    <button onclick="ClosePopUp()">Close</button>
-</div>
 <script>
-    function showPopUp() {
-        my_popup.style.display = "block";
-    }
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+    var timeleft = 10;
+    var te = ${page_num};
+    var downloadTimer = setInterval(function () {
+        if (timeleft <= 0) {
+            clearInterval(downloadTimer);
+            document.getElementById("countdown").innerHTML = "NONE";
+            // document.getElementById("popup").click();
 
-    function hidePopUp() {
-        my_popup.style.display = "none";
-    }
-
-    // function showPopUp() {
-    //     my_popup.style.display = "block";
-    // }
-    //
-    // setTimeout(showPopUp, 60000);
-
-    // function ClosePopUp() {
-    //     my_popup.style.display = "none";
-    // }
-
-    setTimeout(ClosePopUp, 120000)
-
-    function ClosePopUp() {
-        my_popup.style.display = "none";
-    }
-
-    var time_in_sec = 0;
-    var start_calling = ‘’;
-
-    function showPopUp() {
-        // start time update after popup modal show
-        start_calling = setInterval(countdownTime, 1000); // call every one sec
-    }
-
-    function countdownTime() {
-        time_in_sec++;
-        html_tag.innerHTML = time_in_sec; // show time in html tag
-        if (time_in_sec == 10) {
-            clearInterval(start_calling) // stop calling
-            ClosePopUp();
-            ;
+        } else {
+            document.getElementById("countdown").innerHTML = "" + te + " Time Remain:" + timeleft;
         }
-    }
+        timeleft -= 1;
+    }, 1000);
 </script>
-
---%>
+<%@include file="foot.jsp" %>

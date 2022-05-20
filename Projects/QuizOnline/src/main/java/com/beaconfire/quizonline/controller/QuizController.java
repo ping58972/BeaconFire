@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,8 +64,12 @@ public class QuizController {
             model.addAttribute("cateId", id);
             model.addAttribute("quizQuestion", qq);
             model.addAttribute("takeQuiz", takeQuiz);
+            model.addAttribute("quizQuestions", quizQuestions);
             model.addAttribute("page_num", 1);
             model.addAttribute("title", "Quiz Table");
+            HttpSession timeSession = request.getSession(true);
+            timeSession.setAttribute("startTime", new Timestamp(System.currentTimeMillis()));
+            timeSession.setAttribute("endTime", new Timestamp(System.currentTimeMillis() + 10000));
             return "quiz-table";
         }
         return "login";
@@ -79,47 +86,52 @@ public class QuizController {
             QuizQuestion qq = quizQuestions.get(num - 1);
             model.addAttribute("cateId", id);
             model.addAttribute("quizQuestion", qq);
+            model.addAttribute("quizQuestions", quizQuestions);
             model.addAttribute("takeQuiz", takeQuiz);
             model.addAttribute("page_num", num);
             model.addAttribute("title", "Quiz Table");
+
             return "quiz-table";
         }
         return "login";
     }
 
     @PostMapping("/quiz/table/{id}/question/{num}")
-    public ModelAndView quizTablePost(@PathVariable Integer id, @PathVariable Integer num,
+    public RedirectView quizTablePost(@PathVariable Integer id, @PathVariable Integer num,
                                       QuizQuestion qq,
-                                      HttpServletRequest request, Model model) {
+                                      HttpServletRequest request, Model model, RedirectAttributes redir) {
         HttpSession session = request.getSession(false);
+        RedirectView rv = new RedirectView();
+        rv.setContextRelative(true);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
                     .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
             QuizQuestion quizQuestion = quizQuestions.get(num - 1);
-            model.addAttribute("user", user);
-            model.addAttribute("titile", "Taking Quiz");
-            model.addAttribute("cateId", id);
-            model.addAttribute("quizQuestion", quizQuestion);
-            model.addAttribute("takeQuiz", takeQuiz);
-            model.addAttribute("page_num", num);
+
             if (qq.getUserChoiceId() > 0 || qq.getUserShortAnswer() != null) {
                 if (qq.getUserChoiceId() > 0) {
+
                     quizQuestion.setUserChoiceId(qq.getUserChoiceId());
                     quizQuestion.setMarked(true);
+                    redir.addFlashAttribute("isSuccess", true);
                 }
-                if (qq.getUserShortAnswer().length() != 0) {
+                if (qq.getUserShortAnswer().length() != 0 && !qq.getUserShortAnswer().equals(",,,")) {
                     quizQuestion.setUserShortAnswer(qq.getUserShortAnswer());
+                    quizQuestion.setMarked(true);
+                    redir.addFlashAttribute("isSuccess", true);
                 }
                 boolean isSuccess = quizServive.updateQuizQuestion(quizQuestion);
-                model.addAttribute("isSuccess", isSuccess);
             }
             if (num < 10) {
                 num++;
             }
-            return new ModelAndView("redirect:/quiz/table/" + id + "/question/" + num);
+
+            rv.setUrl("/quiz/table/" + id + "/question/" + num);
+            return rv;
         }
-        return new ModelAndView("login");
+        rv.setUrl("/login");
+        return rv;
     }
 
     @GetMapping("/quiz/result/{quizId}")
@@ -154,7 +166,7 @@ public class QuizController {
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;
-            }).reduce(1, (a, b) -> a + b);
+            }).reduce(0, (a, b) -> a + b);
             quizResult.setScore(score);
             model.addAttribute("quizQuestions", quizQuestions);
             model.addAttribute("quizResult", quizResult);

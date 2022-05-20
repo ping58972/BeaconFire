@@ -42,6 +42,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                    <c:if test="${not empty message}"><span style="color: red">${message}</span> </c:if>
                 </article>
             </div>
         </div>

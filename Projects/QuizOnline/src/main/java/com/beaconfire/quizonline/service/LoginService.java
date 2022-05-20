@@ -23,7 +23,7 @@ public class LoginService {
             testUser.setMessage("User Login Success!");
             return testUser;
         }
-        return testUser;
+        return new User();
 
     }
 

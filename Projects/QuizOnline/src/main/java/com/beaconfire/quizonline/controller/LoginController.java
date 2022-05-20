@@ -40,10 +40,10 @@ public class LoginController {
     @PostMapping("/login")
     public ModelAndView postLogin(@RequestParam(name = "email") String email,
                                   @RequestParam(name = "password") String password,
-                                  HttpServletRequest request) {
+                                  HttpServletRequest request, Model model) {
 
-        User possibleUser = loginService.validateLogin(email, password);
-//        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
+//        User possibleUser = loginService.validateLogin(email, password);
+        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
 //        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
         if (possibleUser.getUserId() > 0 && possibleUser.isActive()) {
             HttpSession oldSession = request.getSession(false);
@@ -55,7 +55,8 @@ public class LoginController {
             }
             return new ModelAndView("redirect:/quiz");
         } else {
-            return new ModelAndView("redirect:/login");
+            model.addAttribute("message", "Email or Password wrong!");
+            return new ModelAndView("login");
         }
     }
 

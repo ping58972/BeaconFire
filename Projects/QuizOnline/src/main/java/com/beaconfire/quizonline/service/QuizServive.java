@@ -53,7 +53,7 @@ public class QuizServive {
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;
-            }).reduce(1, (a, b) -> a + b);
+            }).reduce(0, (a, b) -> a + b);
             quiz.setScore(score);
             return quiz;
         }).collect(Collectors.toList());
@@ -103,7 +103,7 @@ public class QuizServive {
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;
-            }).reduce(1, (a, b) -> a + b);
+            }).reduce(0, (a, b) -> a + b);
             quiz.setScore(score);
             return quiz;
         }).collect(Collectors.toList());
