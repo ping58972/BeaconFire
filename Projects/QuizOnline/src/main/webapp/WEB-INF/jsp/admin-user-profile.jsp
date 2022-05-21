@@ -80,10 +80,10 @@
                         </div> <!-- form-group// -->
 
 
-                        <input name="isAdmin" type="hidden"
-                               value="value="${userA.admin}"">
-                        <input name="isActive" type="hidden"
-                               value="value="${userA.active}"">
+                        <%--                        <input name="isAdmin" type="hidden"--%>
+                        <%--                               value="value="${userA.admin}"">--%>
+                        <%--                        <input name="isActive" type="hidden"--%>
+                        <%--                               value="value="${userA.active}"">--%>
                         <input name="message" type="hidden"
                                value="value="${userA.message}"">
                     </form>

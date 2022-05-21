@@ -29,7 +29,6 @@ public class QuizServive {
     }
 
     public List<Quiz> getAllQuizByUser(int id) {
-
         return quizDao.getQuizByUserId(id).stream().map(quiz -> {
             int score = quiz.getQuizQuestionMap().values().stream().map(qq -> {
                 Question q = qq.getQuestion();
@@ -127,10 +126,12 @@ public class QuizServive {
         Question q = questionDao.getQuestionById(id).orElse(new Question());
         Category c = categoryDao.getCategoryById(q.getCategoryId()).orElse(new Category());
         q.setCategoryName(c.getName());
-        Map<Integer, Choice> map = q.getChoiceMap();
+        Map<Integer, Choice> mapChoice = q.getChoiceMap();
         List<Choice> choices = new ArrayList<>();
-        for (Map.Entry<Integer, Choice> entry : map.entrySet()) {
+        q.setQuestionId(id);
+        for (Map.Entry<Integer, Choice> entry : mapChoice.entrySet()) {
             if (entry.getValue().isCorrect()) {
+                q.setCorrectAnswerId(entry.getValue().getChoiceId());
                 q.setCorrectAnswer(entry.getValue().getChoiceDesription());
             } else {
                 choices.add(entry.getValue());
@@ -138,15 +139,20 @@ public class QuizServive {
         }
         if (q.getType().equals("MULTIPLE_CHOICE")) {
             q.setChoice1(choices.get(0).getChoiceDesription());
+            q.setChoiceId1(choices.get(0).getChoiceId());
             q.setChoice2(choices.get(1).getChoiceDesription());
+            q.setChoiceId2(choices.get(1).getChoiceId());
             q.setChoice3(choices.get(2).getChoiceDesription());
+            q.setChoiceId3(choices.get(2).getChoiceId());
         }
 
         return q;
     }
 
-    public boolean updateQuiestion(Question question) {
-
-        return false;
+    public boolean updateQuestion(Question q) {
+        return 1 == questionDao.updateQuestion(q.getQuestionId(), q.getCategoryId(),
+                q.getDescription(), q.getType(), q.isActive(), q.getCorrectAnswerId(),
+                q.getCorrectAnswer(), q.getChoiceId1(), q.getChoice1(), q.getChoiceId2(),
+                q.getChoice2(), q.getChoiceId3(), q.getChoice3());
     }
 }

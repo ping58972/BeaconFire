@@ -21,5 +21,9 @@ public class Question {
     private String choice1;
     private String choice2;
     private String choice3;
+    private int correctAnswerId;
+    private int choiceId1;
+    private int choiceId2;
+    private int choiceId3;
 
 }

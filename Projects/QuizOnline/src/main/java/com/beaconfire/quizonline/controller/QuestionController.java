@@ -105,8 +105,8 @@ public class QuestionController {
                 return new ModelAndView("redirect:/quiz");
             model.addAttribute("title", "Admin");
             Question question = quizServive.getQuestionById(id);
+
             model.addAttribute("question", question);
-            System.out.println(question);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
             return new ModelAndView("question-update");
@@ -126,14 +126,10 @@ public class QuestionController {
                 return rv;
             }
             model.addAttribute("title", "Admin");
-            boolean isSuccess = quizServive.updateQuiestion(question);
-            System.out.println(question);
-
+            boolean isSuccess = quizServive.updateQuestion(question);
             model.addAttribute("isSuccess", isSuccess);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
-//            List<Question> questions = quizServive.getAllQuestion();
-//            model.addAttribute("questions", questions);
             rv.setUrl("/admin/question/update/" + id);
             return rv;
         }

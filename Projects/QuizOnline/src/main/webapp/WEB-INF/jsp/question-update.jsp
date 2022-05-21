@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label>Category</label>
                         <select id="categoryId" class="form-control " name="categoryId">
-                            <c:forEach items="${categories}" var="cate" varStatus="loop">
+                            <c:forEach items="${categories}" var="cate">
                                 <option value="${cate.categoryId}"
                                         <c:if test="${cate.categoryId == question.categoryId}">selected</c:if>
                                 >${cate.name}</option>
@@ -54,7 +54,17 @@
                         <input class="form-control" type="text" name="choice3"
                                value="${question.choice3}">
                     </div>
-
+                    <div class="form-group col-md-6">
+                        <label>Is Active?</label>
+                        <input name="active" type="checkbox" id="active"
+                               <c:if test="${question.active}">checked
+                               value="true" </c:if> >
+                    </div>
+                    <input type="hidden" name="questionId" value="${question.questionId}">
+                    <input type="hidden" name="correctAnswerId" value="${question.correctAnswerId}">
+                    <input type="hidden" name="choiceId1" value="${question.choiceId1}">
+                    <input type="hidden" name="choiceId2" value="${question.choiceId2}">
+                    <input type="hidden" name="choiceId3" value="${question.choiceId3}">
 
                     <div class="form-group">
                         <input type="submit" value="Update">

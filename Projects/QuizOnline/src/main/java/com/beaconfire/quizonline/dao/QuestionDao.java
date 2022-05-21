@@ -114,4 +114,16 @@ public class QuestionDao {
     public int deleteQuestionById(int id) {
         return jdbcTemplate.update("DELETE FROM Question WHERE question_id = ?", id);
     }
+
+    public int updateQuestion(int questionId, int categoryId, String description, String type, boolean active, int correctAnswerId, String correctAnswer, int choiceId1, String choice1, int choiceId2, String choice2, int choiceId3, String choice3) {
+        String choiceQuery = "UPDATE Choice SET choice_description=? WHERE choice_id=?";
+        jdbcTemplate.update(choiceQuery, correctAnswer, correctAnswerId);
+        if (type.equals("MULTIPLE_CHOICE")) {
+            jdbcTemplate.update(choiceQuery, choice1, choiceId1);
+            jdbcTemplate.update(choiceQuery, choice2, choiceId2);
+            jdbcTemplate.update(choiceQuery, choice3, choiceId3);
+        }
+        String questQuery = "UPDATE Question SET category_id=?, description=?, type=?, is_active=? WHERE question_id=?";
+        return jdbcTemplate.update(questQuery, categoryId, description, type, active, questionId);
+    }
 }
