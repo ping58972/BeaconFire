@@ -4,11 +4,10 @@
 <jsp:setProperty name="dateValue" property="time" value="${h.time}"/>
 <div class="container">
     <div class="card text-center">
-        <span>${dateValue}</span>
+        <div id="countdown">Time Remain:</div>
         <form method="post" action="/quiz/table/${cateId}/question/${page_num}">
             <div class="card-header">
                 <h3>Quiz Name: ${takeQuiz.quizName}</h3>
-                <div id="countdown"></div>
             </div>
             <div class="card-body">
                 <h3 class="card-text"> ${quizQuestion.question.description} </h3>
@@ -30,7 +29,6 @@
                             </c:if>
                         </div>
                         <c:if test="${quizQuestion.question.type eq 'SHORT_ANSWER'}">
-                            <%--                                        <c:if test="${}"></c:if>--%>
                             <input class="card-text" type="text" name="userShortAnswer" class="form-control"
                                    value="${quizQuestion.userShortAnswer}">
                             <input type="hidden" name="userChoiceId" value="0">
@@ -38,9 +36,17 @@
                     </c:forEach>
                 </div>
             </div>
-            <br><c:if test="${isSuccess}"><p
-                style="color: blue">Answer for Question #${page_num -1} has Saved!</p></c:if>
-            <button class="btn btn-primary" type="submit">Save -> Next</button>
+            <br>
+            <p style="color: blue"><c:if
+                    test="${isSuccess && (page_num <= 10)}">Answer for Question #${page_num -1} has Saved!</c:if></p>
+            <c:if test="${page_num < 10}">
+                <button class="btn btn-primary" type="submit">Save -> Next</button>
+            </c:if>
+            <p style="color: blue"><c:if
+                    test="${isSuccess && (page_num > 10)}">Answer for Question #${page_num -1} has Saved!</c:if></p>
+            <c:if test="${page_num >= 10}">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </c:if>
 
         </form>
 
@@ -107,16 +113,16 @@
     $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
     })
-    var timeleft = 10;
-    var te = ${page_num};
+    var timeleft = ${timeCounter};
+    <%--var te = ${page_num};--%>
     var downloadTimer = setInterval(function () {
         if (timeleft <= 0) {
             clearInterval(downloadTimer);
-            document.getElementById("countdown").innerHTML = "NONE";
-            // document.getElementById("popup").click();
+            document.getElementById("countdown").innerHTML = "0";
+            document.getElementById("popup").click();
 
         } else {
-            document.getElementById("countdown").innerHTML = "" + te + " Time Remain:" + timeleft;
+            document.getElementById("countdown").innerHTML = "Time Remain:" + timeleft;
         }
         timeleft -= 1;
     }, 1000);

@@ -43,8 +43,8 @@ public class LoginController {
                                   HttpServletRequest request, Model model) {
 
 //        User possibleUser = loginService.validateLogin(email, password);
-        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
-//        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
+//        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
+        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
         if (possibleUser.getUserId() > 0 && possibleUser.isActive()) {
             HttpSession oldSession = request.getSession(false);
             if (oldSession != null) oldSession.invalidate();

@@ -8,11 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController {
@@ -47,80 +49,6 @@ public class AdminController {
         return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/admin/user/all")
-    public ModelAndView allUser(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            if (!user.isAdmin())
-                return new ModelAndView("redirect:/quiz");
-            model.addAttribute("title", "Admin");
-            List<User> users = userService.getAllUsers();
-            model.addAttribute("users", users);
-            return new ModelAndView("user-list");
-        }
-        return new ModelAndView("redirect:/login");
-    }
-
-    @GetMapping("/admin/user/suspend/{id}")
-    public ModelAndView adminUserSuspend(@PathVariable int id, HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            if (!user.isAdmin())
-                return new ModelAndView("redirect:/quiz");
-            model.addAttribute("title", "Admin");
-            userService.changeActiveUserById(id);
-            return new ModelAndView("redirect:/admin/user/all");
-        }
-        return new ModelAndView("redirect:/login");
-    }
-
-    @GetMapping("/admin/user/profile/{id}")
-    public ModelAndView adminUserProfile(@PathVariable int id, HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            if (!user.isAdmin())
-                return new ModelAndView("redirect:/quiz");
-            model.addAttribute("title", "Admin");
-            User user1 = userService.getUserById(id);
-            user1.setAdmin(true);
-            model.addAttribute("userA", user1);
-            return new ModelAndView("admin-user-profile");
-        }
-        return new ModelAndView("redirect:/login");
-    }
-
-    @PostMapping("/admin/user/profile/{id}")
-    public ModelAndView postUserProfile(User newUser,
-                                        HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            if (!user.isAdmin())
-                return new ModelAndView("redirect:/quiz");
-            user.setAdmin(true);
-            model.addAttribute("user", user);
-            User oldUser = loginService.getUserByEmail(newUser.getEmail());
-            model.addAttribute("title", "Profile");
-            if (oldUser.getUserId() > 0) {
-                newUser.setUserId(oldUser.getUserId());
-                User userA = userService.updateUser(newUser);
-                userA.setAdmin(true);
-                model.addAttribute("userA", userA);
-                return new ModelAndView("admin-user-profile");
-            } else {
-                newUser.setMessage("Some thing Wrong!");
-                newUser.setAdmin(true);
-                model.addAttribute("userA", newUser);
-                return new ModelAndView("admin-user-profile");
-            }
-        }
-        return new ModelAndView("redirect:/login");
-
-    }
-
     @GetMapping("/admin/quiz/all")
     public ModelAndView allQuiz(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
@@ -131,61 +59,64 @@ public class AdminController {
             model.addAttribute("title", "Admin");
             List<Quiz> quizzes = quizServive.getAllQuiz();
             model.addAttribute("quizzes", quizzes);
+            List<Category> categories = quizServive.getAllCategory();
+            model.addAttribute("categories", categories);
             return new ModelAndView("quiz-list");
         }
         return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/admin/question/all")
-    public ModelAndView allQuestion(HttpServletRequest request, Model model) {
+    @GetMapping("/admin/quiz/{categoryId}")
+    public ModelAndView allQuizByCategoryId(@PathVariable int categoryId, HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             if (!user.isAdmin())
                 return new ModelAndView("redirect:/quiz");
             model.addAttribute("title", "Admin");
-            List<Question> questions = quizServive.getAllQuestion();
-            model.addAttribute("questions", questions);
+            List<Quiz> quizzes = quizServive.getAllQuiz()
+                    .stream().filter(quiz -> quiz.getCategoryId() == categoryId).collect(Collectors.toList());
+            model.addAttribute("quizzes", quizzes);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
-            return new ModelAndView("question-list");
+            return new ModelAndView("quiz-list");
         }
         return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/admin/question/change/{id}")
-    public ModelAndView allQuestion(@PathVariable int id, HttpServletRequest request, Model model) {
+    @GetMapping("/admin/quiz/result/{tf}")
+    public ModelAndView allQuizByResult(@PathVariable int tf, HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             if (!user.isAdmin())
                 return new ModelAndView("redirect:/quiz");
             model.addAttribute("title", "Admin");
-            quizServive.changeActiveQuestionById(id);
-            List<Question> questions = quizServive.getAllQuestion();
-            model.addAttribute("questions", questions);
+            List<Quiz> quizzes = quizServive.getAllQuiz()
+                    .stream().filter(quiz -> tf == 1 ? quiz.getScore() > 6 : quiz.getScore() <= 6).collect(Collectors.toList());
+            model.addAttribute("quizzes", quizzes);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
-            return new ModelAndView("question-list");
+            return new ModelAndView("quiz-list");
         }
         return new ModelAndView("redirect:/login");
     }
 
-    @PostMapping("/admin/question/all")
-    public ModelAndView newQuestion(Question question, HttpServletRequest request, Model model) {
+    @PostMapping("/admin/quiz/result/search")
+    public ModelAndView allQuizBySearch(@RequestParam(name = "search") String search,
+                                        HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             if (!user.isAdmin())
                 return new ModelAndView("redirect:/quiz");
             model.addAttribute("title", "Admin");
-            boolean isSuccess = quizServive.createNewQuestion(question);
-            model.addAttribute("isSuccess", isSuccess);
+            List<Quiz> quizzes = quizServive.getAllQuiz()
+                    .stream().filter(quiz -> quiz.getQuizName().toLowerCase().contains(search.toLowerCase())).collect(Collectors.toList());
+            model.addAttribute("quizzes", quizzes);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
-            List<Question> questions = quizServive.getAllQuestion();
-            model.addAttribute("questions", questions);
-            return new ModelAndView("question-list");
+            return new ModelAndView("quiz-list");
         }
         return new ModelAndView("redirect:/login");
     }

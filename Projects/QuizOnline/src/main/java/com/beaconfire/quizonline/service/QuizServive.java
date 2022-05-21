@@ -122,4 +122,31 @@ public class QuizServive {
     public boolean changeActiveQuestionById(int id) {
         return 1 == questionDao.changeActiveById(id);
     }
+
+    public Question getQuestionById(int id) {
+        Question q = questionDao.getQuestionById(id).orElse(new Question());
+        Category c = categoryDao.getCategoryById(q.getCategoryId()).orElse(new Category());
+        q.setCategoryName(c.getName());
+        Map<Integer, Choice> map = q.getChoiceMap();
+        List<Choice> choices = new ArrayList<>();
+        for (Map.Entry<Integer, Choice> entry : map.entrySet()) {
+            if (entry.getValue().isCorrect()) {
+                q.setCorrectAnswer(entry.getValue().getChoiceDesription());
+            } else {
+                choices.add(entry.getValue());
+            }
+        }
+        if (q.getType().equals("MULTIPLE_CHOICE")) {
+            q.setChoice1(choices.get(0).getChoiceDesription());
+            q.setChoice2(choices.get(1).getChoiceDesription());
+            q.setChoice3(choices.get(2).getChoiceDesription());
+        }
+
+        return q;
+    }
+
+    public boolean updateQuiestion(Question question) {
+
+        return false;
+    }
 }

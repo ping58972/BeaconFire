@@ -29,10 +29,26 @@
 
 <hr>
 <div class="container">
-
     <h3 class="text-center">
         Your Quiz Result List</h3>
-    <table class="table">
+    <div class="form-group">
+        <label>Category</label>
+        <select id="categoryId" class="form-control " name="categoryId"
+                onchange="if (this.value) window.location.href=this.value">
+            <option value="/quiz"
+                    <c:if test="${categoryId ==0}">selected</c:if>
+            >all
+            </option>
+            <c:forEach items="${categories}" var="cate" varStatus="loop">
+
+                <option value="/quiz/results/${cate.categoryId}"
+                        <c:if test="${categoryId == cate.categoryId}">selected</c:if>
+                >${cate.name}</option>
+            </c:forEach>
+        </select>
+    </div>
+
+    <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">ID</th> &emsp; &emsp;
@@ -46,22 +62,21 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${quizzes}" var="quiz" varStatus="loop">
+        <c:forEach items="${quizzes}" var="quiz">
             <tr>
                 <td>${quiz.quizId}</td> &emsp; &emsp;
                 <td>${quiz.quizName}</td> &emsp; &emsp;&emsp;
                 <td>${quiz.categoryName}</td> &emsp; &emsp; &emsp;
                 <td>${quiz.startTime}</td> &emsp; &emsp; &emsp;
                 <td>${quiz.endTime}</td> &emsp; &emsp;
-                <td scope="row">${quiz.score}/10</td>
-                <th scope="row"><c:if test="${quiz.score < 6}"> Fail</c:if>
-                    <c:if test="${quiz.score >= 6}"> Pass</c:if></th>
+                <td>${quiz.score}/10</td>
+                <td><c:if test="${quiz.score < 6}"> Fail</c:if>
+                    <c:if test="${quiz.score >= 6}"> Pass</c:if></td>
                 <td><a href="/quiz/result/${quiz.quizId}"> More Detail</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
 </div>
 
 <%@include file="foot.jsp" %>

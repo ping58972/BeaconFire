@@ -1,7 +1,7 @@
 <%@include file="head.jsp" %>
 <div class="container">
     <h3>All Feedback</h3>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">ID</th>

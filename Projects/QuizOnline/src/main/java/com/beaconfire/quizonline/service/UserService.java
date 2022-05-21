@@ -26,7 +26,7 @@ public class UserService {
 
     public User updateUser(User newUser) {
         return userDao.updateUser(newUser.getUserId(), newUser.getFirstName(),
-                newUser.getLastName(), newUser.getEmail(), newUser.getPassword(),
+                newUser.getLastName(), newUser.getEmail(), newUser.getPassword(), newUser.isActive(),
                 newUser.getPhone(), newUser.getStreet(), newUser.getCity(), newUser.getState(),
                 newUser.getZipcode(), newUser.getCountry());
     }

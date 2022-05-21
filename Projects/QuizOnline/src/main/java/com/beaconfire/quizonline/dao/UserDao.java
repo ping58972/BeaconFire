@@ -103,7 +103,8 @@ public class UserDao {
         return jdbcTemplate.update(query, email);
     }
 
-    public User updateUser(Integer id, String firstName, String lastName, String email, String password, String phone
+    public User updateUser(Integer id, String firstName, String lastName, String email, String password,
+                           boolean isActive, String phone
             , String street, String city, String state, int zipcode, String country) {
         User testUser = getUserById(id);
         if (testUser.getUserId() < 1) {
@@ -111,8 +112,8 @@ public class UserDao {
         }
         String addressQuery = "UPDATE Address SET street=?, city=?, state=?, zipcode=?, country=? WHERE address_id=?";
         jdbcTemplate.update(addressQuery, street, city, state, zipcode, country, testUser.getAddressId());
-        String query = "UPDATE User SET firstname=?, lastname=?, email=?, password=?, phone=? WHERE user_id=?";
-        jdbcTemplate.update(query, firstName, lastName, email, password, phone, id);
+        String query = "UPDATE User SET firstname=?, lastname=?, email=?, password=?, is_active=? , phone=? WHERE user_id=?";
+        jdbcTemplate.update(query, firstName, lastName, email, password, isActive, phone, id);
         return getUserById(id);
     }
 

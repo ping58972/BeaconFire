@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,6 +26,7 @@ public class QuizController {
     private final QuizServive quizServive;
 
     private Quiz takeQuiz;
+    private final int QUIZ_TIME = 60;
 
     @Autowired
     public QuizController(QuizServive quizServive) {
@@ -45,7 +47,28 @@ public class QuizController {
             model.addAttribute("quizzes", quizzes);
             List<Category> categories = quizServive.getAllCategory();
             model.addAttribute("categories", categories);
+            model.addAttribute("categoryId", 0);
             model.addAttribute("title", "Quiz");
+            return "quiz";
+        }
+        return "login";
+    }
+
+    @GetMapping("/quiz/results/{categoryId}")
+    public String quizResults(@PathVariable int categoryId, HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Quiz Result List");
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            model.addAttribute("title", "Quiz");
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("user", user);
+            List<Quiz> quizzes = quizServive.getAllQuizByUser(user.getUserId())
+                    .stream().filter(quiz -> quiz.getCategoryId() == categoryId).collect(Collectors.toList());
+            model.addAttribute("quizzes", quizzes);
+            model.addAttribute("categoryId", categoryId);
+            List<Category> categories = quizServive.getAllCategory();
+            model.addAttribute("categories", categories);
+            model.addAttribute("title", "Quiz Results");
             return "quiz";
         }
         return "login";
@@ -68,11 +91,25 @@ public class QuizController {
             model.addAttribute("page_num", 1);
             model.addAttribute("title", "Quiz Table");
             HttpSession timeSession = request.getSession(true);
-            timeSession.setAttribute("startTime", new Timestamp(System.currentTimeMillis()));
-            timeSession.setAttribute("endTime", new Timestamp(System.currentTimeMillis() + 10000));
+            timeSession.setAttribute("startTime", new Timestamp(System.currentTimeMillis() + 30000));
+            timeSession.setAttribute("timeCounter", QUIZ_TIME);
             return "quiz-table";
         }
         return "login";
+    }
+
+    /**
+     * Get a diff between two timestamps.
+     *
+     * @param oldTs    The older timestamp
+     * @param newTs    The newer timestamp
+     * @param timeUnit The unit in which you want the diff
+     * @return The diff value, in the provided time unit.
+     */
+    public static long getDateDiff(Timestamp oldTs, Timestamp newTs, TimeUnit timeUnit) {
+        long diffInMS = newTs.getTime() - oldTs.getTime();
+        if (diffInMS < 0) return 0;
+        return timeUnit.convert(diffInMS, TimeUnit.MILLISECONDS);
     }
 
     @GetMapping("/quiz/table/{id}/question/{num}")
@@ -83,14 +120,20 @@ public class QuizController {
             User user = (User) session.getAttribute("user");
             List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
                     .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
-            QuizQuestion qq = quizQuestions.get(num - 1);
+
+            QuizQuestion qq = quizQuestions.get(num <= 10 ? num - 1 : 9);
             model.addAttribute("cateId", id);
             model.addAttribute("quizQuestion", qq);
             model.addAttribute("quizQuestions", quizQuestions);
             model.addAttribute("takeQuiz", takeQuiz);
             model.addAttribute("page_num", num);
             model.addAttribute("title", "Quiz Table");
-
+            HttpSession timeSession = request.getSession(false);
+            Timestamp startTime = (Timestamp) timeSession.getAttribute("startTime");
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            long timeCounter = getDateDiff(currentTime, startTime, TimeUnit.SECONDS);
+            System.out.println("Time counter: " + timeCounter);
+            model.addAttribute("timeCounter", timeCounter);
             return "quiz-table";
         }
         return "login";
@@ -123,7 +166,7 @@ public class QuizController {
                 }
                 boolean isSuccess = quizServive.updateQuizQuestion(quizQuestion);
             }
-            if (num < 10) {
+            if (num <= 10) {
                 num++;
             }
 

@@ -2,7 +2,7 @@
 
 <div class="container">
     <h3>All Contacts</h3>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">ID</th> &emsp; &emsp;

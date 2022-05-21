@@ -62,6 +62,12 @@
                                 <label>State</label>
                                 <input name="state" type="text" class="form-control" value="${userA.state}">
                             </div>
+                            <div class="form-group col-md-6">
+                                <label>Is Active?</label>
+                                <input name="active" type="checkbox" id="active"
+                                       <c:if test="${userA.active}">checked
+                                       value="true" </c:if> >
+                            </div>
 
 
                         </div> <!-- form-row.// -->
