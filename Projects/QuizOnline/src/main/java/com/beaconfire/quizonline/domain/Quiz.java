@@ -1,4 +1,5 @@
 package com.beaconfire.quizonline.domain;
+
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -6,10 +7,8 @@ import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class Quiz {
+public abstract class Quiz {
     private int quizId;
     private String quizName;
     private int userId;

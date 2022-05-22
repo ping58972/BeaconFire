@@ -3,6 +3,8 @@ package com.beaconfire.quizonline.controller;
 import com.beaconfire.quizonline.domain.Contact;
 import com.beaconfire.quizonline.domain.Feedback;
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.jdbc.ContactJdbc;
+import com.beaconfire.quizonline.domain.jdbc.FeedbackJdbc;
 import com.beaconfire.quizonline.service.ContactService;
 import com.beaconfire.quizonline.service.FeedbackService;
 import com.beaconfire.quizonline.service.UserService;
@@ -48,7 +50,7 @@ public class OtherController {
 
     @PostMapping("/feedback")
     public ModelAndView feedback(
-            Feedback feedback,
+            FeedbackJdbc feedback,
             HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
@@ -78,7 +80,7 @@ public class OtherController {
 
     @PostMapping("/contact")
     public ModelAndView contact(
-            Contact contact,
+            ContactJdbc contact,
             HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {

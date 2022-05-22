@@ -1,6 +1,7 @@
 package com.beaconfire.quizonline.controller;
 
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.jdbc.UserJdbc;
 import com.beaconfire.quizonline.service.LoginService;
 import com.beaconfire.quizonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/user/profile")
-    public ModelAndView postRegister(User newUser,
+    public ModelAndView postRegister(UserJdbc newUser,
                                      HttpServletRequest request, Model model) {
         User oldUser = loginService.getUserByEmail(newUser.getEmail());
         model.addAttribute("title", "Profile");
@@ -96,7 +97,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/profile/{id}")
-    public ModelAndView postUserProfile(User newUser,
+    public ModelAndView postUserProfile(UserJdbc newUser,
                                         HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {

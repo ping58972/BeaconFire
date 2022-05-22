@@ -1,6 +1,8 @@
 package com.beaconfire.quizonline.controller;
 
 import com.beaconfire.quizonline.domain.*;
+import com.beaconfire.quizonline.domain.jdbc.ChoiceJdbc;
+import com.beaconfire.quizonline.domain.jdbc.QuizQuestionJdbc;
 import com.beaconfire.quizonline.service.QuizServive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -141,7 +143,7 @@ public class QuizController {
 
     @PostMapping("/quiz/table/{id}/question/{num}")
     public RedirectView quizTablePost(@PathVariable Integer id, @PathVariable Integer num,
-                                      QuizQuestion qq,
+                                      QuizQuestionJdbc qq,
                                       HttpServletRequest request, Model model, RedirectAttributes redir) {
         HttpSession session = request.getSession(false);
         RedirectView rv = new RedirectView();
@@ -150,6 +152,7 @@ public class QuizController {
             User user = (User) session.getAttribute("user");
             List<QuizQuestion> quizQuestions = takeQuiz.getQuizQuestionMap().values()
                     .stream().sorted((q1, q2) -> q1.getOrderNum() - q2.getOrderNum()).collect(Collectors.toList());
+            if (num > 10) num = 10;
             QuizQuestion quizQuestion = quizQuestions.get(num - 1);
 
             if (qq.getUserChoiceId() > 0 || qq.getUserShortAnswer() != null) {
@@ -205,7 +208,7 @@ public class QuizController {
                     qq.setMessage("Got Wrong Answer");
                     return 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
-                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
+                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new ChoiceJdbc());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;

@@ -5,6 +5,10 @@ import com.beaconfire.quizonline.dao.QuestionDao;
 import com.beaconfire.quizonline.dao.QuizDao;
 import com.beaconfire.quizonline.dao.QuizQuestionDao;
 import com.beaconfire.quizonline.domain.*;
+import com.beaconfire.quizonline.domain.jdbc.CategoryJdbc;
+import com.beaconfire.quizonline.domain.jdbc.ChoiceJdbc;
+import com.beaconfire.quizonline.domain.jdbc.QuestionJdbc;
+import com.beaconfire.quizonline.domain.jdbc.QuizJdbc;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -48,7 +52,7 @@ public class QuizServive {
                     qq.setMessage("Got Wrong Answer!");
                     return 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
-                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
+                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new ChoiceJdbc());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;
@@ -60,7 +64,7 @@ public class QuizServive {
 
     public Quiz getNewQuiz(int userId, int categoryId) {
         int quizId = quizDao.createNewQuizByCategoryForUser(userId, categoryId);
-        return quizDao.getQuizById(quizId).orElse(new Quiz());
+        return quizDao.getQuizById(quizId).orElse(new QuizJdbc());
     }
 
     public boolean updateQuizQuestion(QuizQuestion quizQuestion) {
@@ -70,7 +74,7 @@ public class QuizServive {
     }
 
     public Quiz getQuizById(Integer quizId) {
-        return quizDao.getQuizById(quizId).orElse(new Quiz());
+        return quizDao.getQuizById(quizId).orElse(new QuizJdbc());
     }
 
     public void setEndTimeById(Integer quizId) {
@@ -98,7 +102,7 @@ public class QuizServive {
                     return 0;
 //                    return choice.isCorrect() ? 1 : 0;
                 } else if (q.getType().equals("SHORT_ANSWER")) {
-                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new Choice());
+                    Choice choice = q.getChoiceMap().values().stream().findFirst().orElse(new ChoiceJdbc());
                     return choice.getChoiceDesription().equals(qq.getUserShortAnswer()) ? 1 : 0;
                 }
                 return 0;
@@ -123,8 +127,8 @@ public class QuizServive {
     }
 
     public Question getQuestionById(int id) {
-        Question q = questionDao.getQuestionById(id).orElse(new Question());
-        Category c = categoryDao.getCategoryById(q.getCategoryId()).orElse(new Category());
+        Question q = questionDao.getQuestionById(id).orElse(new QuestionJdbc());
+        Category c = categoryDao.getCategoryById(q.getCategoryId()).orElse(new CategoryJdbc());
         q.setCategoryName(c.getName());
         Map<Integer, Choice> mapChoice = q.getChoiceMap();
         List<Choice> choices = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.beaconfire.quizonline.controller;
 
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.jdbc.UserJdbc;
 import com.beaconfire.quizonline.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +44,8 @@ public class LoginController {
                                   HttpServletRequest request, Model model) {
 
 //        User possibleUser = loginService.validateLogin(email, password);
-//        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
-        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
+        User possibleUser = loginService.validateLogin("ping@pong.com", "pingpong");
+//        User possibleUser = loginService.validateLogin("admin@quiz.com", "admin");
         if (possibleUser.getUserId() > 0 && possibleUser.isActive()) {
             HttpSession oldSession = request.getSession(false);
             if (oldSession != null) oldSession.invalidate();
@@ -81,12 +82,12 @@ public class LoginController {
             return new ModelAndView("redirect:/quiz");
         }
         model.addAttribute("title", "Register");
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserJdbc());
         return new ModelAndView("register");
     }
 
     @PostMapping("/register")
-    public ModelAndView postRegister(User newUser,
+    public ModelAndView postRegister(UserJdbc newUser,
                                      HttpServletRequest request, Model model) {
         User testUser = loginService.getUserByEmail(newUser.getEmail());
         model.addAttribute("title", "Register");

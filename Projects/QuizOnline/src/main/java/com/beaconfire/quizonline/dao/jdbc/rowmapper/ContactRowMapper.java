@@ -1,6 +1,7 @@
-package com.beaconfire.quizonline.dao;
+package com.beaconfire.quizonline.dao.jdbc.rowmapper;
 
 import com.beaconfire.quizonline.domain.Contact;
+import com.beaconfire.quizonline.domain.jdbc.ContactJdbc;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 public class ContactRowMapper implements RowMapper<Contact> {
     @Override
     public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Contact contact = new Contact();
+        Contact contact = new ContactJdbc();
         contact.setContactId(rs.getInt("contact_id"));
         contact.setFirstName(rs.getString("firstname"));
         contact.setLastName(rs.getString("lastname"));

@@ -3,6 +3,7 @@ package com.beaconfire.quizonline.controller;
 import com.beaconfire.quizonline.domain.Category;
 import com.beaconfire.quizonline.domain.Question;
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.jdbc.QuestionJdbc;
 import com.beaconfire.quizonline.service.QuizServive;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +62,7 @@ public class QuestionController {
     }
 
     @PostMapping("/admin/question/all")
-    public ModelAndView newQuestion(Question question, HttpServletRequest request, Model model) {
+    public ModelAndView newQuestion(QuestionJdbc question, HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
@@ -115,7 +116,7 @@ public class QuestionController {
     }
 
     @PostMapping("/admin/question/update/{id}")
-    public RedirectView postUpdateQuestion(Question question, @PathVariable int id, RedirectAttributes redir,
+    public RedirectView postUpdateQuestion(QuestionJdbc question, @PathVariable int id, RedirectAttributes redir,
                                            HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         RedirectView rv = new RedirectView();

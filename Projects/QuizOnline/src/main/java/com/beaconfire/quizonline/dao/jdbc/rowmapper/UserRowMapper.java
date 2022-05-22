@@ -1,6 +1,7 @@
-package com.beaconfire.quizonline.dao;
+package com.beaconfire.quizonline.dao.jdbc.rowmapper;
 
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.jdbc.UserJdbc;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 public class UserRowMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user = new User();
+        User user = new UserJdbc();
         user.setUserId(rs.getInt("user_id"));
         user.setFirstName(rs.getString("firstname"));
         user.setLastName(rs.getString("lastname"));

@@ -4,10 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class QuizQuestion {
+public abstract class QuizQuestion {
     private int qqId;
     private int quizId;
     private int questionId;

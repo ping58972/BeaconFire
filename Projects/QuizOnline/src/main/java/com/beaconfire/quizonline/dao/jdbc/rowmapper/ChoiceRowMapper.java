@@ -1,7 +1,8 @@
-package com.beaconfire.quizonline.dao;
+package com.beaconfire.quizonline.dao.jdbc.rowmapper;
 
 import com.beaconfire.quizonline.domain.Choice;
 import com.beaconfire.quizonline.domain.Question;
+import com.beaconfire.quizonline.domain.jdbc.ChoiceJdbc;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 public class ChoiceRowMapper implements RowMapper<Choice> {
     @Override
     public Choice mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Choice choice = new Choice();
+        Choice choice = new ChoiceJdbc();
         choice.setChoiceId(rs.getInt("choice_id"));
         choice.setQuestionId(rs.getInt("question_id"));
         choice.setChoiceDesription(rs.getString("choice_description"));

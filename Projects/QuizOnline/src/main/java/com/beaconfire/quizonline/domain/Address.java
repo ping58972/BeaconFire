@@ -4,10 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class Address {
+public abstract class Address {
     private int addressId;
     private String street;
     private String city;

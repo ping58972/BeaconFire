@@ -6,10 +6,8 @@ import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class Question {
+public abstract class Question {
     private int questionId;
     private int categoryId;
     private String categoryName;

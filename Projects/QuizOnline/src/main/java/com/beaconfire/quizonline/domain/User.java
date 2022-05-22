@@ -4,10 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class User {
+public abstract class User {
     private int userId;
     private String firstName;
     private String lastName;
@@ -34,4 +32,5 @@ public class User {
         this.setCountry(address.getCountry());
         this.setZipcode(address.getZipcode());
     }
+
 }
