@@ -7,6 +7,7 @@ import com.beaconfire.quizonline.dao.jdbc.rowmapper.QuizRowMapper;
 import com.beaconfire.quizonline.domain.*;
 import com.beaconfire.quizonline.domain.jdbc.CategoryJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -62,21 +63,25 @@ public class QuizDaoJdbcImpl implements QuizDao {
     }
 
     @Autowired
+    @Qualifier("questionDaoJdbcImpl")
     public void setQuestionDao(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
 
     @Autowired
+    @Qualifier("userDaoJdbcImpl")
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
     @Autowired
+    @Qualifier("categoryDaoJdbcImpl")
     public void setCategoryDao(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
 
     @Autowired
+    @Qualifier("quizQuestionDaoJdbcImpl")
     public void setQuizQuestionDao(QuizQuestionDao quizQuestionDao) {
         this.quizQuestionDao = quizQuestionDao;
     }

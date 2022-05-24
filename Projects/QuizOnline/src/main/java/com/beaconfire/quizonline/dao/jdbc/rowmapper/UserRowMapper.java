@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class UserRowMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user = new UserJdbc();
+        UserJdbc user = new UserJdbc();
         user.setUserId(rs.getInt("user_id"));
         user.setFirstName(rs.getString("firstname"));
         user.setLastName(rs.getString("lastname"));

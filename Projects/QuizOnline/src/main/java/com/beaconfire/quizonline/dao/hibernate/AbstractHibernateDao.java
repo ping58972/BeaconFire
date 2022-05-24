@@ -1,7 +1,10 @@
 package com.beaconfire.quizonline.dao.hibernate;
 
+import com.beaconfire.quizonline.domain.Contact;
+import com.beaconfire.quizonline.domain.Question;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -28,6 +31,8 @@ public abstract class AbstractHibernateDao<T> {
         CriteriaQuery<T> criteriaQuery = builder.createQuery(clazz);
         criteriaQuery.from(clazz);
         return session.createQuery(criteriaQuery).getResultList();
+
+
     }
 
     public T findById(int id) {
@@ -38,8 +43,5 @@ public abstract class AbstractHibernateDao<T> {
         getCurrentSession().save(item);
     }
 
-    public void delete(T item) {
-        getCurrentSession().delete(item);
-    }
 
 }

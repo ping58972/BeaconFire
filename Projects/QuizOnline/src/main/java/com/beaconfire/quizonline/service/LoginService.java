@@ -7,9 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoginService {
     private UserDao userJdbcDao;
+    private UserDao userHibernateDao;
+
+    @Autowired
+    @Qualifier("userDaoHibernateImpl")
+    public void setUserHibernateDao(UserDao userHibernateDao) {
+        this.userHibernateDao = userHibernateDao;
+    }
 
     @Autowired
     public void setUserJdbcDao(@Qualifier("userDaoJdbcImpl")
@@ -18,8 +27,8 @@ public class LoginService {
     }
 
     public User validateLogin(String email, String password) {
-
-        User testUser = userJdbcDao.getUserByEmail(email);
+//        User testUser = userJdbcDao.getUserByEmail(email);
+        User testUser = userHibernateDao.getUserByEmail(email);
         if (password.equals(testUser.getPassword())) {
             testUser.setMessage("User Login Success!");
             return testUser;
@@ -29,12 +38,17 @@ public class LoginService {
     }
 
     public User getUserByEmail(String email) {
-        return userJdbcDao.getUserByEmail(email);
+
+//        return userJdbcDao.getUserByEmail(email);
+        return userHibernateDao.getUserByEmail(email);
     }
 
     public User createNewUser(User user) {
-        return userJdbcDao.createNewUser(user.getFirstName(), user.getLastName(), user.getEmail(),
+        return userHibernateDao.createNewUser(user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.getPassword(), user.getPhone(), user.getStreet(), user.getCity(),
                 user.getState(), user.getZipcode(), user.getCountry());
+//        return userJdbcDao.createNewUser(user.getFirstName(), user.getLastName(), user.getEmail(),
+//                user.getPassword(), user.getPhone(), user.getStreet(), user.getCity(),
+//                user.getState(), user.getZipcode(), user.getCountry());
     }
 }

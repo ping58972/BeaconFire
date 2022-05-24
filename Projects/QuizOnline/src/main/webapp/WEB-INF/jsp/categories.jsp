@@ -22,10 +22,10 @@
             </div>
         </c:forEach>
         <p></p>
-        <div class="col-md-6">
-            <div class="card"><p class="text-center">
-                <a class="btn btn-primary" href="/admin/categories/new">Create a New Category</a></p></div>
-        </div>
+        <%--        <div class="col-md-6">--%>
+        <%--            <div class="card"><p class="text-center">--%>
+        <%--                <a class="btn btn-primary" href="/admin/categories/new">Create a New Category</a></p></div>--%>
+        <%--        </div>--%>
     </div>
 </div>
 

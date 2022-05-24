@@ -1,6 +1,7 @@
 package com.beaconfire.quizonline.controller;
 
 import com.beaconfire.quizonline.domain.User;
+import com.beaconfire.quizonline.domain.hibernate.UserHibernate;
 import com.beaconfire.quizonline.domain.jdbc.UserJdbc;
 import com.beaconfire.quizonline.service.LoginService;
 import com.beaconfire.quizonline.service.UserService;
@@ -29,6 +30,7 @@ public class UserController {
 
     @GetMapping("/user/profile")
     public ModelAndView getProfile(HttpServletRequest request, Model model) {
+
         return new ModelAndView("user-profile");
     }
 

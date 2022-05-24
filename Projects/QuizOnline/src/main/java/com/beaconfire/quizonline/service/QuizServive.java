@@ -9,6 +9,8 @@ import com.beaconfire.quizonline.domain.jdbc.CategoryJdbc;
 import com.beaconfire.quizonline.domain.jdbc.ChoiceJdbc;
 import com.beaconfire.quizonline.domain.jdbc.QuestionJdbc;
 import com.beaconfire.quizonline.domain.jdbc.QuizJdbc;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,24 +18,69 @@ import java.util.stream.Collectors;
 
 @Service
 public class QuizServive {
-    CategoryDao categoryDao;
-    QuestionDao questionDao;
-    QuizDao quizDao;
-    QuizQuestionDao quizQuestionDao;
+    CategoryDao categoryDaoJdbc;
+    CategoryDao categoryDaoHibernate;
+    QuestionDao questionDaoJdbc;
+    QuestionDao questionDaoHibernate;
+    QuizDao quizDaoJdbc;
+    QuizDao quizDaoHibernate;
+    QuizQuestionDao quizQuestionDaoJdbc;
+    QuizQuestionDao quizQuestionDaoHibernate;
 
-    public QuizServive(CategoryDao categoryDao, QuestionDao questionDao, QuizDao quizDao, QuizQuestionDao quizQuestionDao) {
-        this.categoryDao = categoryDao;
-        this.questionDao = questionDao;
-        this.quizDao = quizDao;
-        this.quizQuestionDao = quizQuestionDao;
+    @Autowired
+    @Qualifier("categoryDaoJdbcImpl")
+    public void setCategoryDaoJdbc(CategoryDao categoryDaoJdbc) {
+        this.categoryDaoJdbc = categoryDaoJdbc;
+    }
+
+    @Autowired
+    @Qualifier("categoryDaoHibernateImpl")
+    public void setCategoryDaoHibernate(CategoryDao categoryDaoHibernate) {
+        this.categoryDaoHibernate = categoryDaoHibernate;
+    }
+
+    @Autowired
+    @Qualifier("questionDaoJdbcImpl")
+    public void setQuestionDaoJdbc(QuestionDao questionDaoJdbc) {
+        this.questionDaoJdbc = questionDaoJdbc;
+    }
+
+    @Autowired
+    @Qualifier("questionDaoHibernateImpl")
+    public void setQuestionDaoHibernate(QuestionDao questionDaoHibernate) {
+        this.questionDaoHibernate = questionDaoHibernate;
+    }
+
+    @Autowired
+    @Qualifier("quizDaoJdbcImpl")
+    public void setQuizDaoJdbc(QuizDao quizDaoJdbc) {
+        this.quizDaoJdbc = quizDaoJdbc;
+    }
+
+    @Autowired
+    @Qualifier("quizDaoHibernateImpl")
+    public void setQuizDaoHibernate(QuizDao quizDaoHibernate) {
+        this.quizDaoHibernate = quizDaoHibernate;
+    }
+
+    @Autowired
+    @Qualifier("quizQuestionDaoJdbcImpl")
+    public void setQuizQuestionDaoJdbc(QuizQuestionDao quizQuestionDaoJdbc) {
+        this.quizQuestionDaoJdbc = quizQuestionDaoJdbc;
+    }
+
+    @Autowired
+    @Qualifier("quizQuestionDaoHibernateImpl")
+    public void setQuizQuestionDaoHibernate(QuizQuestionDao quizQuestionDaoHibernate) {
+        this.quizQuestionDaoHibernate = quizQuestionDaoHibernate;
     }
 
     public List<Category> getAllCategory() {
-        return categoryDao.getAllCategory();
+        return categoryDaoJdbc.getAllCategory();
     }
 
     public List<Quiz> getAllQuizByUser(int id) {
-        return quizDao.getQuizByUserId(id).stream().map(quiz -> {
+        return quizDaoJdbc.getQuizByUserId(id).stream().map(quiz -> {
             int score = quiz.getQuizQuestionMap().values().stream().map(qq -> {
                 Question q = qq.getQuestion();
                 if (q.getType().equals("MULTIPLE_CHOICE")) {
@@ -63,26 +110,26 @@ public class QuizServive {
     }
 
     public Quiz getNewQuiz(int userId, int categoryId) {
-        int quizId = quizDao.createNewQuizByCategoryForUser(userId, categoryId);
-        return quizDao.getQuizById(quizId).orElse(new QuizJdbc());
+        int quizId = quizDaoJdbc.createNewQuizByCategoryForUser(userId, categoryId);
+        return quizDaoJdbc.getQuizById(quizId).orElse(new QuizJdbc());
     }
 
     public boolean updateQuizQuestion(QuizQuestion quizQuestion) {
-        quizDao.setEndTimeById(quizQuestion.getQuizId());
-        return 1 == quizQuestionDao.updateQuizQuestionById(quizQuestion.getQqId(), quizQuestion.getUserChoiceId(),
+        quizDaoJdbc.setEndTimeById(quizQuestion.getQuizId());
+        return 1 == quizQuestionDaoJdbc.updateQuizQuestionById(quizQuestion.getQqId(), quizQuestion.getUserChoiceId(),
                 quizQuestion.getUserShortAnswer(), quizQuestion.getOrderNum(), quizQuestion.isMarked());
     }
 
     public Quiz getQuizById(Integer quizId) {
-        return quizDao.getQuizById(quizId).orElse(new QuizJdbc());
+        return quizDaoJdbc.getQuizById(quizId).orElse(new QuizJdbc());
     }
 
     public void setEndTimeById(Integer quizId) {
-        quizDao.setEndTimeById(quizId);
+        quizDaoJdbc.setEndTimeById(quizId);
     }
 
     public List<Quiz> getAllQuiz() {
-        return quizDao.getAllQuiz().stream().map(quiz -> {
+        return quizDaoJdbc.getAllQuiz().stream().map(quiz -> {
             int score = quiz.getQuizQuestionMap().values().stream().map(qq -> {
                 Question q = qq.getQuestion();
                 if (q.getType().equals("MULTIPLE_CHOICE")) {
@@ -114,21 +161,21 @@ public class QuizServive {
     }
 
     public List<Question> getAllQuestion() {
-        return questionDao.getAllQuestion();
+        return questionDaoJdbc.getAllQuestion();
     }
 
     public boolean createNewQuestion(Question q) {
-        return 0 < questionDao.createNewQuestion(q.getCategoryId(), q.getDescription(), q.getType(),
+        return 0 < questionDaoJdbc.createNewQuestion(q.getCategoryId(), q.getDescription(), q.getType(),
                 q.getCorrectAnswer(), q.getChoice1(), q.getChoice2(), q.getChoice3());
     }
 
     public boolean changeActiveQuestionById(int id) {
-        return 1 == questionDao.changeActiveById(id);
+        return 1 == questionDaoJdbc.changeActiveById(id);
     }
 
     public Question getQuestionById(int id) {
-        Question q = questionDao.getQuestionById(id).orElse(new QuestionJdbc());
-        Category c = categoryDao.getCategoryById(q.getCategoryId()).orElse(new CategoryJdbc());
+        Question q = questionDaoJdbc.getQuestionById(id).orElse(new QuestionJdbc());
+        Category c = categoryDaoJdbc.getCategoryById(q.getCategoryId()).orElse(new CategoryJdbc());
         q.setCategoryName(c.getName());
         Map<Integer, Choice> mapChoice = q.getChoiceMap();
         List<Choice> choices = new ArrayList<>();
@@ -154,7 +201,7 @@ public class QuizServive {
     }
 
     public boolean updateQuestion(Question q) {
-        return 1 == questionDao.updateQuestion(q.getQuestionId(), q.getCategoryId(),
+        return 1 == questionDaoJdbc.updateQuestion(q.getQuestionId(), q.getCategoryId(),
                 q.getDescription(), q.getType(), q.isActive(), q.getCorrectAnswerId(),
                 q.getCorrectAnswer(), q.getChoiceId1(), q.getChoice1(), q.getChoiceId2(),
                 q.getChoice2(), q.getChoiceId3(), q.getChoice3());

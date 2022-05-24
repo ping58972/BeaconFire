@@ -9,6 +9,7 @@ import com.beaconfire.quizonline.domain.QuizQuestion;
 import com.beaconfire.quizonline.domain.jdbc.QuestionJdbc;
 import com.beaconfire.quizonline.domain.jdbc.QuizQuestionJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -50,6 +51,7 @@ public class QuizQuestionDaoJdbcImpl implements QuizQuestionDao {
     }
 
     @Autowired
+    @Qualifier("questionDaoJdbcImpl")
     public void setQuestionDao(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
