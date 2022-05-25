@@ -27,16 +27,13 @@ public abstract class AbstractHibernateDao<T> {
         CriteriaQuery<T> criteriaQuery = builder.createQuery(clazz);
         criteriaQuery.from(clazz);
         return session.createQuery(criteriaQuery).getResultList();
-
-
     }
-
     public T findById(int id) {
         return getCurrentSession().get(clazz, id);
     }
-
     public void add(T item) {
         getCurrentSession().save(item);
     }
+
 
 }

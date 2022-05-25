@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import java.util.List;
 
 @Service
@@ -26,6 +28,7 @@ public class LoginService {
         this.userJdbcDao = userJdbcDao;
     }
 
+
     public User validateLogin(String email, String password) {
 //        User testUser = userJdbcDao.getUserByEmail(email);
         User testUser = userHibernateDao.getUserByEmail(email);
@@ -37,11 +40,13 @@ public class LoginService {
 
     }
 
+
     public User getUserByEmail(String email) {
 
 //        return userJdbcDao.getUserByEmail(email);
         return userHibernateDao.getUserByEmail(email);
     }
+
 
     public User createNewUser(User user) {
         return userHibernateDao.createNewUser(user.getFirstName(), user.getLastName(), user.getEmail(),

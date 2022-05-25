@@ -28,9 +28,11 @@ public class AddressHibernate extends Address {
     private int zipcode;
     @Column
     private String country;
-    @OneToOne(fetch = FetchType.LAZY)//, mappedBy = "address")
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private UserHibernate userHibernate;
+
+
 //    @OneToOne(fetch = FetchType.LAZY, mappedBy = "address")
 //    @JoinColumn(name = "address_id")
 //    private UserHibernate userHibernate;

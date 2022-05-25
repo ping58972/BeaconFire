@@ -24,7 +24,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(
-                "com.beaconfire.quizonline");
+                "com.beaconfire.quizonline.domain");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;

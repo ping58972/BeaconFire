@@ -31,4 +31,8 @@ public class UserHibernate extends User {
     private String faceUrl;
     @Column(name = "address_id")
     private Integer addressId;
+    @Column(name = "is_active")
+    private Boolean isActive;
+    @Column(name = "is_admin")
+    private Boolean isAdmin;
 }

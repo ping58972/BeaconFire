@@ -38,13 +38,17 @@ public class UserHibernate extends User {
 //    private int addressId;
 
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "userHibernate")
-//    @JoinColumn(name = "address_id")
     @ToString.Exclude
     private AddressHibernate address;
     @Column(name = "is_active")
     private boolean isActive;
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "address_id")
+//    @ToString.Exclude
+//    private AddressHibernate address;
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    @ToString.Exclude

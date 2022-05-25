@@ -16,26 +16,30 @@ import org.hibernate.query.Query;
 import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.transaction.Transactional;
 
 import java.util.List;
 
 @Repository("userDaoHibernateImpl")
-@Transactional
+
 public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> implements UserDao {
     public UserDaoHibernateImpl() {
         setClazz(UserHibernate.class);
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
         Session session = getCurrentSession();
         Query query = session.createQuery("FROM UserHibernate ");
         List<User> qhList = query.list();
+        System.out.println(qhList);
         return qhList;
     }
 
     @Override
+    @Transactional
     public UserHibernate getUserById(Integer id) {
         UserHibernate user = this.findById(id);
         user.setAddressId(user.getAddress().getAddressId());
@@ -44,22 +48,22 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public UserHibernate getUserByEmail(String email) {
         Query query = getCurrentSession().createQuery(
                 "FROM UserHibernate u WHERE u.email = :email ");
         query.setParameter("email", email);
         List<UserHibernate> list = query.list();
-        System.out.println(list);
         if (list.size() == 0) {
             return new UserHibernate();
         }
         UserHibernate user = list.get(0);
-        System.out.println("Email User: " + user);
         user.setAddressToUser(user.getAddress());
         return user;
     }
 
     @Override
+    @Transactional
     public User createNewUser(String firstName, String lastName, String email,
                               String password, String phone, String street, String city,
                               String state, int zipcode, String country) {
@@ -101,6 +105,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public int deleteUserById(Integer id) {
         Session session = getCurrentSession();
         UserHibernate user = session.get(UserHibernate.class, id);
@@ -109,6 +114,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public int deleteUserByEmail(String email) {
         Session session = getCurrentSession();
         UserHibernate user = getUserByEmail(email);
@@ -117,6 +123,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public User updateUser(Integer id, String firstName, String lastName,
                            String email, String password, boolean isActive,
                            String phone, String street, String city, String state,
@@ -142,6 +149,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public int changeActiveById(int id) {
         Session session = getCurrentSession();
         UserHibernate user = session.get(UserHibernate.class, id);
@@ -152,6 +160,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
+    @Transactional
     public Address getAddressById(Integer id) {
         Query query = getCurrentSession().createQuery(
                 "FROM AddressHibernate add WHERE add.addressId = :id ");
