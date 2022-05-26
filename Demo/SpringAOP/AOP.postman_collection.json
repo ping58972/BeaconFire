@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "16243617-8bde-4c0e-885e-36fd815021ca",
+		"name": "AOP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14922776"
+	},
+	"item": [
+		{
+			"name": "get a demo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/demo",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a exception",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/demoException",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demoException"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

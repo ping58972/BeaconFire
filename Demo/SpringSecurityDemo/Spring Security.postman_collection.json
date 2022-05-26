@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "d038ca5f-e903-4e7b-93bf-e64960eac098",
+		"name": "Spring Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14922776"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Zack\",\n    \"password\": \"Zack\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9999/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Content",
+			"item": [
+				{
+					"name": "test",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJaYWNrIiwicGVybWlzc2lvbnMiOlt7ImF1dGhvcml0eSI6ImRlbGV0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJ3cml0ZSJ9XX0.WX-0oxDbdycxCyi2pYi3mmfDwSdsVT82MJMdJrFDm5o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8888/content/test",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPbGl2ZXIiLCJwZXJtaXNzaW9ucyI6W3siYXV0aG9yaXR5IjoicmVhZCJ9XX0.CnF3LaTvjKv7J3wbywo9mdip_esXXRrvSWOc8LWj1u4",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:8888/content/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPbGl2ZXIiLCJwZXJtaXNzaW9ucyI6W3siYXV0aG9yaXR5IjoicmVhZCJ9XX0.CnF3LaTvjKv7J3wbywo9mdip_esXXRrvSWOc8LWj1u4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8888/content/get/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUcmFjeSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9XX0.2pS4WQKUSFN51419zvJu-xivLDgoTziqxb5jrLbNM1E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"content\": \"content 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8888/content/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYW5kb24iLCJwZXJtaXNzaW9ucyI6W3siYXV0aG9yaXR5IjoidXBkYXRlIn1dfQ.xTXRKAIMRCY2qvMHEHtr3nan_v1awqxpfkDj_iPxwhY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"content\": \"new content 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8888/content/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJaYWNrIiwicGVybWlzc2lvbnMiOlt7ImF1dGhvcml0eSI6ImRlbGV0ZSJ9XX0.Ew7yc3kaKvC1_9J7fPqNbwZLC0npZgRZ3dhgchRwuAI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8888/content/delete/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"content",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

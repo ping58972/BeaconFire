@@ -6,6 +6,7 @@ import com.beaconfire.pp_webservice_restful.domain.common.ResponseStatus;
 import com.beaconfire.pp_webservice_restful.domain.hibernate.UserHibernate;
 import com.beaconfire.pp_webservice_restful.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('read')")
     public AllUsersResponse getAllUsers(){
         try{
             return AllUsersResponse.builder().status(ResponseStatus.builder()
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('read')")
     public UserResponse getUserById(@PathVariable int userId) {
         try{
             return UserResponse.builder().status(ResponseStatus.builder()
@@ -51,6 +54,7 @@ public class UserController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAnyAuthority('write')")
     public UserResponse createNewUser(@RequestBody UserHibernate user) {
         try {
             User newUser = userService.createNewUser(user);
@@ -68,6 +72,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('delete')")
     public UserResponse deleteUserById(@PathVariable("id") int id) {
         try {
             User newUser = userService.deleteUserById(id);
@@ -85,6 +90,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyAuthority('update')")
     public UserResponse changeUserStatus(@PathVariable int id, @RequestParam(value="activate", required = true) boolean activate) {
         try {
             User newUser = userService.changeUserStatus(id, activate) ;

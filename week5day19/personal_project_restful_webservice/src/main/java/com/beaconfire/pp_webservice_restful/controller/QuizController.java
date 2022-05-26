@@ -9,6 +9,7 @@ import com.beaconfire.pp_webservice_restful.domain.common.ResponseStatus;
 import com.beaconfire.pp_webservice_restful.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class QuizController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('read')")
     public AllQuizResponse getAllQuizzes() {
         try{
             return AllQuizResponse.builder().status(ResponseStatus.builder()
@@ -36,6 +38,7 @@ public class QuizController {
         }
     }
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyAuthority('read')")
     public AllQuizResponse  getAllQuizzesByUserId(@PathVariable int userId) {
         try{
             return AllQuizResponse.builder().status(ResponseStatus.builder()
