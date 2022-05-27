@@ -6,6 +6,7 @@ import com.beaconfire.pp_webservice_restful.domain.AllUsersResponse;
 import com.beaconfire.pp_webservice_restful.domain.User;
 import com.beaconfire.pp_webservice_restful.domain.UserResponse;
 import com.beaconfire.pp_webservice_restful.domain.hibernate.UserHibernate;
+import com.beaconfire.pp_webservice_restful.exception.UserNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,44 +25,53 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return  getAll().stream().map(u->(User)u).collect(Collectors.toList());
+    public List<User> getAllUsers() throws UserNotFoundException {
+        return getAll().stream().map(u->(User)u).collect(Collectors.toList());
 
     }
 
     @Override
-    public User getUserById(int id) {
-        return findById(id);
+    public User getUserById(int id) throws UserNotFoundException {
+        User user = findById(id);
+        if(user == null){
+            throw new UserNotFoundException("User ID Not found .");
+        }
+        return user;
     }
 
     @Override
-    public User createNewUser(User user) {
+    public User createNewUser(User user) throws UserNotFoundException {
         this.add((UserHibernate) user);
         return user;
     }
 
     @Override
-    public User deleteUserById(int id) {
+    public User deleteUserById(int id) throws UserNotFoundException {
         Transaction transaction = null;
         UserHibernate user = null;
         try {
             transaction = getCurrentSession().beginTransaction();
             user = getCurrentSession().get(UserHibernate.class, id);
+            if(user == null){
+                throw new UserNotFoundException("User Not found to delete.");
+            }
             transaction.commit();
             transaction = getCurrentSession().beginTransaction();
             getCurrentSession().delete(user);
             transaction.commit();
         } catch (Exception e){
             e.printStackTrace();
+
             if(transaction != null){
                 transaction.rollback();
             }
+            throw new UserNotFoundException("Uh! something wrong!");
         }
         return user;
     }
 
     @Override
-    public User changeUserStatus(int id, boolean activate) {
+    public User changeUserStatus(int id, boolean activate) throws UserNotFoundException {
         Transaction transaction = null;
         UserHibernate user = null;
         try {

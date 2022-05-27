@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserHibernate extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

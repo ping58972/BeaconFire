@@ -3,6 +3,8 @@ package com.beaconfire.pp_webservice_restful.dao.hibernate;
 import com.beaconfire.pp_webservice_restful.dao.QuizDao;
 import com.beaconfire.pp_webservice_restful.domain.Quiz;
 import com.beaconfire.pp_webservice_restful.domain.hibernate.QuizHibernate;
+import com.beaconfire.pp_webservice_restful.exception.QuizNotFoundException;
+import com.beaconfire.pp_webservice_restful.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -16,14 +18,18 @@ public class QuizDaoHibernateImpl extends AbstractHibernateDao<QuizHibernate> im
     }
 
     @Override
-    public List<Quiz> getAllQuizzes() {
+    public List<Quiz> getAllQuizzes() throws QuizNotFoundException {
         return getAll().stream().map(q->(QuizHibernate)q).collect(Collectors.toList());
     }
 
     @Override
-    public List<Quiz>  getAllQuizzesByUserId(int userId) {
+    public List<Quiz>  getAllQuizzesByUserId(int userId) throws QuizNotFoundException {
         Query query = getCurrentSession().createQuery("FROM QuizHibernate q WHERE q.userId = :userId");
         query.setParameter("userId", userId);
-        return query.getResultList();
+        List<Quiz> quizzes = query.getResultList();
+        if(quizzes.size() == 0){
+            throw new QuizNotFoundException("No any Quiz found for User Id " + userId);
+        }
+        return quizzes;
     }
 }

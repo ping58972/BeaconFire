@@ -6,9 +6,11 @@ import com.beaconfire.pp_webservice_restful.domain.AllUsersResponse;
 import com.beaconfire.pp_webservice_restful.domain.Quiz;
 import com.beaconfire.pp_webservice_restful.domain.UserResponse;
 import com.beaconfire.pp_webservice_restful.domain.common.ResponseStatus;
+import com.beaconfire.pp_webservice_restful.exception.QuizNotFoundException;
 import com.beaconfire.pp_webservice_restful.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,28 +28,19 @@ public class QuizController {
 
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('read')")
-    public AllQuizResponse getAllQuizzes() {
-        try{
-            return AllQuizResponse.builder().status(ResponseStatus.builder()
+    public ResponseEntity<AllQuizResponse> getAllQuizzes() throws QuizNotFoundException {
+
+            return ResponseEntity.ok(AllQuizResponse.builder().status(ResponseStatus.builder()
                             .success(true).message("Returning all Quizzes.").build())
-                    .quizzes(quizService.getAllQuizzes()).build();
-        } catch (Exception e){
-            return AllQuizResponse.builder().status(ResponseStatus.builder()
-                            .success(false).message("Can not return Any Quizzes.").build())
-                    .quizzes(new ArrayList<>()).build();
-        }
+                    .quizzes(quizService.getAllQuizzes()).build());
+
     }
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyAuthority('read')")
-    public AllQuizResponse  getAllQuizzesByUserId(@PathVariable int userId) {
-        try{
-            return AllQuizResponse.builder().status(ResponseStatus.builder()
+    public ResponseEntity<AllQuizResponse> getAllQuizzesByUserId(@PathVariable int userId) throws QuizNotFoundException {
+            return ResponseEntity.ok(AllQuizResponse.builder().status(ResponseStatus.builder()
                             .success(true).message("Returning all Quizzes by User Id.").build())
-                    .quizzes(quizService.getAllQuizzesByUserId(userId)).build();
-        } catch (Exception e){
-            return AllQuizResponse.builder().status(ResponseStatus.builder()
-                            .success(false).message("Can not return Any Quiz by User Id.").build())
-                    .quizzes(new ArrayList<>()).build();
-        }
+                    .quizzes(quizService.getAllQuizzesByUserId(userId)).build());
+
     }
 }
