@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface QuizDao {
 
-    List<Quiz> getAllQuizzes() throws QuizNotFoundException;
+    List<Quiz> getAllQuizzes();
     List<Quiz>  getAllQuizzesByUserId(int userId) throws QuizNotFoundException;
 }

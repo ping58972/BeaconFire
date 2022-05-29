@@ -6,17 +6,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RestControllerTest {
+class QuizControllerTest {
 
     @BeforeEach
     void setUp() {
     }
 
-    @Test
-    void getTest(){
-        assertTrue(true);
-    }
     @AfterEach
     void tearDown() {
+    }
+
+    @Test
+    void getAllQuizzes() {
+    }
+
+    @Test
+    void getAllQuizzesByUserId() {
     }
 }

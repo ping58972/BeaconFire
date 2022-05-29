@@ -18,7 +18,7 @@ public class QuizDaoHibernateImpl extends AbstractHibernateDao<QuizHibernate> im
     }
 
     @Override
-    public List<Quiz> getAllQuizzes() throws QuizNotFoundException {
+    public List<Quiz> getAllQuizzes() {
         return getAll().stream().map(q->(QuizHibernate)q).collect(Collectors.toList());
     }
 

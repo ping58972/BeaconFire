@@ -87,6 +87,7 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
             if(transaction != null){
                 transaction.rollback();
             }
+            throw new UserNotFoundException("Uh! something wrong!");
         }
         return user;
     }

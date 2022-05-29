@@ -38,4 +38,5 @@ public class UserService {
     public User changeUserStatus(int id, boolean activate) throws UserNotFoundException {
         return userDaoHibernate.changeUserStatus(id, activate);
     }
+
 }

@@ -18,7 +18,7 @@ public class QuizService {
         this.quizDaoHibernate = quizDaoHibernate;
     }
 
-    public List<Quiz> getAllQuizzes() throws QuizNotFoundException {
+    public List<Quiz> getAllQuizzes() {
         return quizDaoHibernate.getAllQuizzes();
     }
 
