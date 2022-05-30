@@ -45,9 +45,7 @@ public class UserController {
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('write')")
     public ResponseEntity<UserResponse> createNewUser(@RequestBody UserHibernate user) throws UserNotFoundException {
-            User newUser = userService.createNewUser(user);
-            if(newUser == null)
-                throw new UserNotFoundException("Some thing wrong!");
+        User newUser = userService.createNewUser(user);
             return ResponseEntity.ok(UserResponse.builder().status(ResponseStatus.builder()
                     .success(true).message("Created a new User.")
                     .build()).user(newUser).build());
@@ -71,7 +69,7 @@ public class UserController {
 
             User newUser = userService.changeUserStatus(id, activate) ;
             if(newUser == null){
-                throw new RuntimeException("Some thing wrong!");
+                throw new UserNotFoundException("Some thing wrong!");
             }
             return ResponseEntity.ok(UserResponse.builder().status(ResponseStatus.builder()
                     .success(true).message("User Statue changed success.")

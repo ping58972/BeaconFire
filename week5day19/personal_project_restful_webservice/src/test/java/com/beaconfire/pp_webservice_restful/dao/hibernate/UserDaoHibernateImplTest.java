@@ -1,18 +1,33 @@
 package com.beaconfire.pp_webservice_restful.dao.hibernate;
 
-import org.junit.jupiter.api.AfterEach;
+import com.beaconfire.pp_webservice_restful.dao.UserDao;
+import com.beaconfire.pp_webservice_restful.domain.User;
+import com.beaconfire.pp_webservice_restful.domain.hibernate.UserHibernate;
+import com.beaconfire.pp_webservice_restful.exception.UserNotFoundException;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class UserDaoHibernateImplTest {
 
+
+    @BeforeEach
+    void setUp() {
+    }
+
     @Test
     void getCurrentSession() {
-        assertTrue(true);
     }
 
     @Test
@@ -41,7 +56,7 @@ class UserDaoHibernateImplTest {
     }
 
     @Test
-    void getUserById() {
+    void getUserById(){
         assertTrue(true);
     }
 

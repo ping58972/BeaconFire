@@ -49,4 +49,11 @@ class QuizServiceTest {
         assertEquals(quizzesSpy, quizService.getAllQuizzesByUserId(1));
         Mockito.verify(quizDao, Mockito.times(1)).getAllQuizzesByUserId(1);
     }
+    @Test
+    void getAllQuizzesByUserId_shouldThrowException() throws QuizNotFoundException {
+        QuizNotFoundException quizNotFoundException = new QuizNotFoundException("No any Quiz found for User Id "+ -1);
+        Mockito.when(quizDao.getAllQuizzesByUserId(-1)).thenThrow(quizNotFoundException);
+        assertThrows(QuizNotFoundException.class, ()-> quizService.getAllQuizzesByUserId(-1));
+        Mockito.verify(quizDao, Mockito.times(1)).getAllQuizzesByUserId(-1);
+    }
 }

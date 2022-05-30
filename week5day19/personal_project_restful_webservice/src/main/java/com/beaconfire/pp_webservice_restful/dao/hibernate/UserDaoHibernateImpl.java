@@ -41,7 +41,9 @@ public class UserDaoHibernateImpl extends AbstractHibernateDao<UserHibernate> im
 
     @Override
     public User createNewUser(User user) throws UserNotFoundException {
-        this.add((UserHibernate) user);
+//        this.add((UserHibernate) user);
+        getCurrentSession().save((UserHibernate)user);
+        System.out.println(user);
         return user;
     }
 

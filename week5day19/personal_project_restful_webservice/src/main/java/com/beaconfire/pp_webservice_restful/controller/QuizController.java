@@ -28,7 +28,7 @@ public class QuizController {
 
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('read')")
-    public ResponseEntity<AllQuizResponse> getAllQuizzes() throws QuizNotFoundException {
+    public ResponseEntity<AllQuizResponse> getAllQuizzes() {
 
             return ResponseEntity.ok(AllQuizResponse.builder().status(ResponseStatus.builder()
                             .success(true).message("Returning all Quizzes.").build())
