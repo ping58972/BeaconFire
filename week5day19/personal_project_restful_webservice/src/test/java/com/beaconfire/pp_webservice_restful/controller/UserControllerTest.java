@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -49,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @WebMvcTest(controllers = UserController.class)
+//@RunWith(MockitoJUnitRunner.class)
 class UserControllerTest {
 
 
@@ -126,20 +129,48 @@ class UserControllerTest {
 
     @Test
     void createNewUser() throws Exception {
-          User newUser = UserHibernate.builder().email("email@email.com").addressId(10).build();
+        User newUser = UserHibernate.builder().firstName("firstname")
+                .email("email@email.com").addressId(10).build();
         User userExpect = UserHibernate.builder().userId(99).email("email@email.com").addressId(10).build();
         Mockito.when(userService.createNewUser(newUser)).thenReturn(userExpect);
-
         UserResponse userResponseExpect = UserResponse.builder()
                 .status(ResponseStatus.builder().message("Created a new User.")
                         .success(true)
                         .build()).user(userExpect).build();
         Gson gson = new Gson();
-        String json = gson.toJson(userResponseExpect);
+        String jsonSend = gson.toJson(newUser);
+        String jsonExpect = gson.toJson(userResponseExpect);
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(json))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonSend)
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(jsonExpect));
+        Mockito.verify(userService, Mockito.times(1))
+                .createNewUser(newUser);
+
+    }
+    @Test
+    void createNewUser_shouldThrowException() throws Exception {
+        User newUser = UserHibernate.builder().firstName("firstname")
+                .email("email@email.com").addressId(10).build();
+//        User userExpect = UserHibernate.builder().userId(99).email("email@email.com").addressId(10).build();
+        Mockito.when(userService.createNewUser(newUser)).thenReturn(null);
+        UserResponse userResponseExpect = UserResponse.builder()
+                .status(ResponseStatus.builder().message("Created a new User.")
+                        .success(true)
+                        .build()).user(null).build();
+        Gson gson = new Gson();
+        String jsonSend = gson.toJson(newUser);
+        String jsonExpect = gson.toJson(userResponseExpect);
+        mockMvc.perform(MockMvcRequestBuilders.post("/user")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(jsonSend)
+                )
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                ;
+        Mockito.verify(userService, Mockito.times(1))
+                .createNewUser(newUser);
 
     }
 

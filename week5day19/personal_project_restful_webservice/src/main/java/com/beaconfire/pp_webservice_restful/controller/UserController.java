@@ -46,6 +46,9 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('write')")
     public ResponseEntity<UserResponse> createNewUser(@RequestBody UserHibernate user) throws UserNotFoundException {
         User newUser = userService.createNewUser(user);
+        if(newUser == null){
+            throw new UserNotFoundException("Some thing wrong!");
+        }
             return ResponseEntity.ok(UserResponse.builder().status(ResponseStatus.builder()
                     .success(true).message("Created a new User.")
                     .build()).user(newUser).build());

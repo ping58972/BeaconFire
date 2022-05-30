@@ -4,6 +4,7 @@ import com.beaconfire.pp_webservice_restful.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -36,4 +37,17 @@ public class UserHibernate extends User {
     private Boolean isActive;
     @Column(name = "is_admin")
     private Boolean isAdmin;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserHibernate)) return false;
+        UserHibernate that = (UserHibernate) o;
+        return getEmail().equals(that.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail());
+    }
 }

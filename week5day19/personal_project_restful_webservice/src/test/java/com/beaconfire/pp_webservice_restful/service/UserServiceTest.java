@@ -24,7 +24,6 @@ class UserServiceTest {
     @Spy
     List<User> usersSpy = new ArrayList<>();
 
-
     @Test
     void getAllUsers() throws UserNotFoundException {
         User userExpected = UserHibernate.builder().userId(-1).build();
