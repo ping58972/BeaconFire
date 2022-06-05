@@ -22,16 +22,17 @@ public class OwnerService {
         return ownerRepo.findById(id).orElse(new Owner());
     }
 
-    public void saveOrUpdateOwner(Owner owner){
-        ownerRepo.save(owner);
+    public Owner saveOrUpdateOwner(Owner owner){
+        return ownerRepo.save(owner);
     }
-    public void addPetToOwnerById(String id, Pet pet){
+    public Owner addPetToOwnerById(String id, Pet pet){
         Owner owner = ownerRepo.findById(id).orElse(new Owner());
         List<Pet> pets = owner.getPets();
         pets.add(pet);
-        ownerRepo.save(owner);
+        return ownerRepo.save(owner);
     }
-    public void deleteOwnerById(String id){
+    public String deleteOwnerById(String id){
         ownerRepo.deleteById(id);
+        return id;
     }
 }

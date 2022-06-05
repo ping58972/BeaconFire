@@ -6,6 +6,7 @@ import com.beaconfire.mongorestful.service.OwnerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,30 +22,31 @@ public class OwnerController {
     }
     @GetMapping(value = "/all-owners")
     @ApiOperation(value = "Find all owners", response = Iterable.class)
-    public List<Owner> findAllOwners(){
-        return ownerService.findAllOwners();
+    public ResponseEntity<List<Owner>> findAllOwners(){
+        return ResponseEntity.ok(ownerService.findAllOwners());
     }
     @GetMapping(value = "/owner/{id}")
     @ApiOperation(value = "Find owner by id", response = Owner.class)
-    public Owner findOwnerById(@PathVariable String id){
-        return ownerService.findOwnerById(id);
+    public ResponseEntity<Owner> findOwnerById(@PathVariable String id){
+        return ResponseEntity.ok(ownerService.findOwnerById(id));
     }
     @PostMapping("/owner")
     @ApiOperation(value = "Save or update Owner")
-    public void saveOrUpdateOwner(@RequestBody Owner owner){
-        ownerService.saveOrUpdateOwner(owner);
+    public ResponseEntity<Owner> saveOrUpdateOwner(@RequestBody Owner owner){
+        return ResponseEntity.ok(ownerService.saveOrUpdateOwner(owner));
     }
 
     @PutMapping("owner/{id}/pet")
     @ApiOperation(value = "Adding a pet to an existing owner with id")
-    public void addPetToOwnerById(@PathVariable String id, @RequestBody Pet pet){
-        ownerService.addPetToOwnerById(id, pet);
+    public ResponseEntity<Owner> addPetToOwnerById(@PathVariable String id, @RequestBody Pet pet){
+        return ResponseEntity.ok(ownerService.addPetToOwnerById(id, pet));
     }
 
     @DeleteMapping("/owner/{id}")
     @ApiOperation(value = "Delete owner by id")
-    public void deleteOwnerById(@PathVariable String id){
+    public ResponseEntity<String> deleteOwnerById(@PathVariable String id){
         ownerService.deleteOwnerById(id);
+        return ResponseEntity.ok("Deleted the Owner by Id: "+id);
     }
 
 }
