@@ -1,10 +1,9 @@
 package com.beaconfire.emailapp;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,8 +12,23 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
+@JsonDeserialize
 public class QuizHistoryMessage implements Serializable {
-    String email;
+    String emailFrom;
+    String emailTo;
     String subject;
     List<Quiz> history;
+
+    public QuizHistoryMessage() {
+    }
+
+    public QuizHistoryMessage(@JsonProperty("emailFrom") String emailFrom,
+                              @JsonProperty("emailTo") String emailTo,
+                              @JsonProperty("subject") String subject,
+                              @JsonProperty("history") List<Quiz> history) {
+        this.emailFrom = emailFrom;
+        this.emailTo = emailTo;
+        this.subject = subject;
+        this.history = history;
+    }
 }

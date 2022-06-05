@@ -28,4 +28,29 @@ public class EmailProduceController {
         rabbitTemplate.convertAndSend("emailExchange", routingKey, jsonMessage);
         return ResponseEntity.ok("Message Sent.");
     }
+    @PostMapping("produce/fanout")
+    public ResponseEntity<String> produceFanout(@RequestBody NewMessageRequest request,
+                                                @RequestParam String routingKey) {
+        SimpleMessage newMessage = SimpleMessage.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .build();
+
+        rabbitTemplate.convertAndSend("simpleExchange", routingKey, newMessage.toString());
+
+        return ResponseEntity.ok("Message Sent");
+    }
+
+    @PostMapping("produce/topic")
+    public ResponseEntity<String> produceTopic(@RequestBody NewMessageRequest request,
+                                               @RequestParam String routingKey) {
+        SimpleMessage newMessage = SimpleMessage.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .build();
+
+        rabbitTemplate.convertAndSend("emailExchange", routingKey, newMessage.toString());
+
+        return ResponseEntity.ok("Message Sent");
+    }
 }
