@@ -1,0 +1,11 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: core-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}

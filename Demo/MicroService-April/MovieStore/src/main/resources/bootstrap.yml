@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: movie-store
+  profiles:
+    active: development
+  cloud:
+    config:
+      uri: http://localhost:8888
+      label: main
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
