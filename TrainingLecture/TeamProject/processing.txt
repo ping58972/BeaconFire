@@ -1,0 +1,45 @@
+
+
+Sprint#1 -> Friday, Jun 10 (setup and see something on App and can running)
+
+Sprint#2 -> Monday, Jun 13 (combine all in one on cloud)
+
+Spring#3 -> Thurday, Jun 16 (every thing should be done)
+
+- Problem-> my Debit Card 
+
+Onboarding
+Visa Status Management
+Authentication
+Application Review
+
+
+Auth server
+-> Email service (RabitMQ)
+-> Register service (http://localhost:9000/register) (not request Authentication)
+Login Service (http://localhost:9000/login)
+
+let HR gernareate Token -> email to user -> 
+(Token 3hs expiration) Register with enail and password-> login (employee and HR) fill a form
+
+
+Auth -> 9999
+manger Port: 9000 -> Gateway
+Employee service : 8000 - 8100
+House -> 7000 - 7100
+App -> 7700 -> 7800
+
+
+other -> 8500 -> 8700
+
+
+@Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "token_id")
+
+@Column(name = "token", columnDefinition = "VARCHAR(36)")    @Type(type="uuid-char")    private UUID token = UUID.randomUUID();
+
+
+
+import java.util.UUID;
+
+
+https://www.mailinator.com/

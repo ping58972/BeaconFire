@@ -1,0 +1,5 @@
+Hello everyone, the writeup for the personal project has been released! You can find it on the Day 14 section on the course website. 
+
+For now, please read through the requirements and start designing your database (data modeling step) using ER diagrams or by drawing it. Once you have designed your DB, please submit it by this Friday (May 13), 9am EST.
+
+In case anyone is interested, here's a free tool for designing ER diagrams: https://lucid.app/

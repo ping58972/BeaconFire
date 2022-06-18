@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "83eb9a07-6c3f-4ab9-8798-931beb4f0f09",
+		"name": "PersonalProjectRestful",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10239140"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin@quiz.com\",\n    \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QuizRestful",
+			"item": [
+				{
+					"name": "Get all Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaW5nQGdtYWlsLmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9XX0.7Q9GkBrvUDTSYFjSxKgOHUYVoAjTSIkE2-tWb04PLxD101Ur3IbPfEeNtyquRR7Z0zP08pKAMEdgk0gDu3kI8Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2aXRhMjAxMUBnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6W119.h6iFngca5Ep3w95M9DsdnhqoBdbQVRP9CAN6heP4qo-nclKYDy1O46tsK2g0SvH_wD9Y8Uis5jSLVDVWFF5XMQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Quiz by user id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/quiz/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"quiz",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  Exception From All Quiz by user id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/quiz/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"quiz",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change user status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/user/63/status?activate=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"63",
+								"status"
+							],
+							"query": [
+								{
+									"key": "activate",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Quiz",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/quiz",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"quiz"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User by Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/user/64",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"64"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"userId\": null,\n        \"firstName\": \"Kristine\",\n        \"lastName\": \"Littrell\",\n        \"email\": \"kelsi@gmail.com\",\n        \"password\": \"moH2sah9ai\",\n        \"phone\": \"(215)577-7145\",\n        \"faceUrl\": \"https://fakeperson-face.oss-us-west-1.aliyuncs.com/Face/female/female20171026073158722.jpg\",\n        \"addressId\": 2\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exception by wrong User Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/user/33333",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"33333"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"userId\": null,\n        \"firstName\": \"Kristine\",\n        \"lastName\": \"Littrell\",\n        \"email\": \"kelsi_vol@gmail.com\",\n        \"password\": \"moH2sah9ai\",\n        \"phone\": \"(215)577-7145\",\n        \"faceUrl\": \"https://fakeperson-face.oss-us-west-1.aliyuncs.com/Face/female/female20171026073158722.jpg\",\n        \"addressId\": 1\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"3"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actuator",
+			"item": [
+				{
+					"name": "metrics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator/metrics",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator",
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "metrics spec",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator/metrics/jvm.threads.live",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator",
+								"metrics",
+								"jvm.threads.live"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mappings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator/mappings",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator",
+								"mappings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "beans",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator/beans",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator",
+								"beans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actuator",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBxdWl6LmNvbSIsInBlcm1pc3Npb25zIjpbeyJhdXRob3JpdHkiOiJ3cml0ZSJ9LHsiYXV0aG9yaXR5IjoicmVhZCJ9LHsiYXV0aG9yaXR5IjoidXBkYXRlIn0seyJhdXRob3JpdHkiOiJkZWxldGUifV19.naeZZrn2cohXGUBzWKJjisDHFjhQcFTEx5rGjmBQdkaFQD6QFiyFd-cErw-5tpc5-Dh0n03hQt_Tv-6lpBtc0A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

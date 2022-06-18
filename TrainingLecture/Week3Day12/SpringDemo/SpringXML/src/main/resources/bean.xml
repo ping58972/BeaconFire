@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dependencyOne" class="XMLDemo.DependencyOne" />
+
+    <bean id="dependencyTwo" class="XMLDemo.DependencyTwo" scope="prototype"/>
+
+    <bean id="dependencyThree" class="XMLDemo.DependencyThree" />
+
+
+    <bean id="dependencyConsumer" class="XMLDemo.DependencyConsumer">
+        <constructor-arg ref="dependencyOne" index="0"/>
+        <constructor-arg ref="dependencyThree" name="dependencyThree"/>
+        <property name="dependencyTwo" ref="dependencyTwo"/>
+    </bean>
+
+<!--    <bean id="dependencyConsumer" class="XMLDemo.DependencyConsumer" scope="singleton">-->
+<!--        <constructor-arg type="XMLDemo.DependencyThree" ref="dependencyThree"></constructor-arg>-->
+<!--        <constructor-arg type="XMLDemo.DependencyOne" ref="dependencyOne"></constructor-arg>-->
+<!--        <property name="dependencyTwo" ref="dependencyTwo"></property>-->
+<!--    </bean>-->
+
+<!--    <bean id="dependencyConsumer" class="XMLDemo.DependencyConsumer" scope="singleton">-->
+<!--        <constructor-arg index="1" ref="dependencyThree"></constructor-arg>-->
+<!--        <constructor-arg index="0" ref="dependencyOne"></constructor-arg>-->
+<!--        <property name="dependencyTwo" ref="dependencyTwo"></property>-->
+<!--    </bean>-->
+
+<!--    <bean id="dependencyConsumer" class="XMLDemo.DependencyConsumer" scope="singleton">-->
+<!--        <constructor-arg name="dependencyThree" ref="dependencyThree"></constructor-arg>-->
+<!--        <constructor-arg name="dependencyOne" ref="dependencyOne"></constructor-arg>-->
+<!--        <property name="dependencyTwo" ref="dependencyTwo"></property>-->
+<!--    </bean>-->
+
+    <!--circular dependency-->
+<!--    <bean id="a" class="CircularDependencyDemo.A">-->
+<!--        <constructor-arg name="b" ref="b"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="b" class="CircularDependencyDemo.B">-->
+<!--        <constructor-arg name="c" ref="c"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="c" class="CircularDependencyDemo.C">-->
+<!--        <constructor-arg name="a" ref="a"/>-->
+<!--    </bean>-->
+
+</beans>

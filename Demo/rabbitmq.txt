@@ -1,0 +1,6 @@
+brew services start rabbitmq     //start 
+brew services stop  rabbitmq     //stop
+
+brew services restart rabbitmq   //restart 
+
+should be able to run /usr/local/sbin/rabbitmq-server or use brew services start rabbitmq

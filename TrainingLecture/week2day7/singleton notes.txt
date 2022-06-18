@@ -1,0 +1,62 @@
+1. implement a singleton class
+
+//eager singleton
+once it's created, the instance is immediately created
+
+
+class MySingleton {
+	private static MySingleton instance = new MySingleton();// not null
+
+	// private constructor {}
+
+	// public static MySingleton getter method - returns instance
+}
+
+// lazy singleton
+- once it's created, the instance is null at first
+- then later when the getter method is called, then the instance is populated to be something like `new MyLazySingleton()`
+
+class MyLazySingleton{
+	private static MyLazySingleton instance = null;
+
+	// private constructor {}
+
+	// public static MyLazySingleton getter method - 
+	instance = new MySingleton();
+	returns instance;
+}
+
+// thread-safe lazy singleton
+class MyLazySingleton{
+	private static MyLazySingleton instance = null;
+
+	// private constructor {}
+
+	// public static MyLazySingleton getter method - 
+	if (instance == null) // time optimization to make it fast
+		synchr(MyLazySingleton.class)
+			if (instance == null) // thread safe
+				instance = new MySingleton();
+	return instance;
+}
+
+2. test your implemented singleton class in a multi-threaded environment
+
+- create 2 threads: t1, t2
+- t1 run():
+	{
+		MySingleton s1 = MySingleton.getInstance();
+		print(s1);
+	}
+
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+...
+
+MySingleton s1;
+MySingleton s2;
+
+print(s1);
+print(s2);
