@@ -9,28 +9,26 @@ import java.util.function.Supplier;
 public class Driver {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        demo1();
-//        demo2();
-//        demo3();
-//        demo4();
+        // demo1();
+        // demo2();
+        // demo3();
+        // demo4();
         demo5();
-//        demo6();
+        // demo6();
     }
 
-    private static void demo1(){
+    private static void demo1() {
         // submit runnable task to executor service
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         executorService.submit(
-                ()-> {
+                () -> {
                     System.out.println("Current Thread: " + Thread.currentThread().getName());
-                }
-        );
+                });
         executorService.submit(
                 () -> {
                     System.out.println("Current Thread: " + Thread.currentThread().getName());
-                }
-        );
+                });
 
         executorService.shutdown();
     }
@@ -40,9 +38,8 @@ public class Driver {
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<String> future = executorService.submit(
                 () -> {
-                   return "Current Thread: " + Thread.currentThread().getName();
-                }
-        );
+                    return "Current Thread: " + Thread.currentThread().getName();
+                });
 
         System.out.println(future.get());
         executorService.shutdown();
@@ -68,26 +65,27 @@ public class Driver {
                 () -> {
                     Thread.sleep(4000);
                     return "Task 4 finished running on: " + Thread.currentThread().getName();
-                }
-        );
+                });
 
-        // invokeAll - Executes the given tasks, returns a list of Future objects that hold the status and results
+        // invokeAll - Executes the given tasks, returns a list of Future objects that
+        // hold the status and results
         List<Future<String>> resultList = executorService.invokeAll(taskList);
-//
-//        for (Future<String> future : resultList){
-//            System.out.println(future.get());
-//        }
+        //
+        // for (Future<String> future : resultList){
+        // System.out.println(future.get());
+        // }
 
         System.out.println("Something else we need to do");
 
-        // invokeAny - Executes the given tasks, returns the result of one successfully executed task
-//        String result = executorService.invokeAny(taskList);
-//        System.out.println(result);
+        // invokeAny - Executes the given tasks, returns the result of one successfully
+        // executed task
+        // String result = executorService.invokeAny(taskList);
+        // System.out.println(result);
 
         executorService.shutdown();
     }
 
-    private static void demo4(){
+    private static void demo4() {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
 
         List<Runnable> taskList = Arrays.asList(
@@ -114,10 +112,9 @@ public class Driver {
                         e.printStackTrace();
                     }
                     System.out.println("Task 3 is finished running on: " + Thread.currentThread().getName());
-                }
-        );
+                });
 
-        for (Runnable task : taskList){
+        for (Runnable task : taskList) {
             CompletableFuture.runAsync(task, executorService);
         }
         System.out.println("Something else we need to do");
@@ -127,7 +124,6 @@ public class Driver {
 
     private static void demo5() throws InterruptedException, ExecutionException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-
 
         Supplier<String> task1 = () -> {
             try {
@@ -161,33 +157,34 @@ public class Driver {
         CompletableFuture<Boolean> task3Future = CompletableFuture.supplyAsync(task3, executorService);
 
         // join vs get
-//        System.out.println(task1Future.join());
-//        System.out.println(task1Future.get());
+        // System.out.println(task1Future.join());
+        // System.out.println(task1Future.get());
 
         // anyOf
-//        CompletableFuture<Object> firstResult = CompletableFuture.anyOf(task1Future, task2Future, task3Future);
-//        System.out.println(firstResult.join());
+        // CompletableFuture<Object> firstResult = CompletableFuture.anyOf(task1Future,
+        // task2Future, task3Future);
+        // System.out.println(firstResult.join());
 
         // allOf
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(
                 task1Future,
                 task2Future,
                 task3Future);
-//        combinedFuture.join();
-//        System.out.println(combinedFuture.isDone());
+        // combinedFuture.join();
+        // System.out.println(combinedFuture.isDone());
 
         // thenApply
-//        CompletableFuture<String> task1FutureExtended = task1Future.thenApply(
-//                (result) -> {
-//                    return result + ", something else we need to do";
-//                }
-//        );
-//        System.out.println(task1FutureExtended.join());
+        // CompletableFuture<String> task1FutureExtended = task1Future.thenApply(
+        // (result) -> {
+        // return result + ", something else we need to do";
+        // }
+        // );
+        // System.out.println(task1FutureExtended.join());
 
         CompletableFuture<String> combinedResultFuture = combinedFuture.thenApply(
                 (placeHolder) -> {
-            return task1Future.join() + " " + task2Future.join() + " " + task3Future.join();
-        } );
+                    return task1Future.join() + " " + task2Future.join() + " " + task3Future.join();
+                });
 
         System.out.println(combinedResultFuture.join());
 
@@ -212,10 +209,9 @@ public class Driver {
                 () -> {
                     Thread.sleep(3000);
                     return "Task 3 finished running on: " + Thread.currentThread().getName();
-                }
-        );
+                });
 
-        for (Callable<String> task : taskList){
+        for (Callable<String> task : taskList) {
             completionService.submit(task);
         }
 
@@ -228,6 +224,5 @@ public class Driver {
         executorService.shutdown();
 
     }
-
 
 }
